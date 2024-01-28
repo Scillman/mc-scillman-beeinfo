@@ -22,7 +22,7 @@ public class BeenfoScreen extends Screen
     private ItemStack honeyBottle;
     private int x;
     private int y;
-    
+
     BeenfoScreen(Object object, int honeyLevel, List<String> beeNames)
     {
         super(Text.translatable("beenfo.screen.title"));
@@ -43,14 +43,11 @@ public class BeenfoScreen extends Screen
     {
         super.init();
 
-        int minRows = Math.min(3, beeNames.size());
-        int usedHeight = 30 + (minRows * 30) + 8; // minRows = 0, beeCount = 0
+        int minRows = Math.max(3, beeNames.size());
+        int usedHeight = 30 + (minRows * 30) + 8;
 
         this.x = (this.width - 176) / 2;
         this.y = (this.height - usedHeight) / 2;
-
-        // TODO: this is likely where my bug came from, double check
-        Beenfo.LOGGER.info("BeenfoMenu beeCount="+beeNames.size()+" usedHeight="+usedHeight+" height="+this.height);
     }
 
     @Override
@@ -83,7 +80,7 @@ public class BeenfoScreen extends Screen
 
             for (int i = Math.max(5, honeyLevel); i < 9; i++)
             {
-                // ? empty slots ?
+                // Honey bottle slots
                 drawTexture(matrices, x+7+(i*18), y+7, 8, 64, 18, 18);
             }
         } // end of TEXTURE usage
@@ -135,3 +132,42 @@ public class BeenfoScreen extends Screen
         return false;
     }
 }
+
+/**
+ *
+ * RENDERER ==> TEXTURE (2D)
+ *
+ * 0,0     176
+ *    +-----------+
+ * 30 | HEADER    |
+ *    +-----------+
+ * 30 | ICON+NAME |
+ *    +-----------+
+ * 8  | FOOTER    |
+ *    +-----------+
+ *
+ * 9,33   22
+ *     +------+
+ *  22 | ICON |
+ *     +------+
+ *
+ * 7,7   18
+ *    +------------+
+ * 18 | HONEY_SLOT |
+ *    +------------+
+ *
+ * RENDERER ==> TEXT (2D)
+ *
+ * 48,40
+ *      +------+
+ *      | NAME |
+ *      +------+
+ *
+ * RENDERER ==> ITEM (3D => 2D)
+ *
+ * 8,8
+ *    +--------------+
+ *    | HONEY_BOTTLE |
+ *    +--------------+
+ *
+ */
