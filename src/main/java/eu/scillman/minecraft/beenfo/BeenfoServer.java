@@ -4,8 +4,9 @@ import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 
 import org.jetbrains.annotations.Nullable;
 
-import eu.scillman.minecraft.beenfo.Beenfo;
-import io.netty.buffer.Unpooled;
+import eu.scillman.minecraft.beenfo.network.BeenfoPacketHUD;
+import eu.scillman.minecraft.beenfo.network.BeenfoPacketLookAt;
+import eu.scillman.minecraft.beenfo.network.BeenfoPacketMenu;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -22,18 +23,53 @@ import net.minecraft.world.World;
 import net.minecraft.block.entity.BeehiveBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 
+import java.util.ArrayList;;
+
 public class BeenfoServer implements ModInitializer
 {
-    public static final Identifier C2SPacketIdentifier      = new Identifier(Beenfo.MOD_ID, "c2s");         // Client -> Server
-    public static final Identifier S2CPacketIdentifierOpen  = new Identifier(Beenfo.MOD_ID, "s2c_open");    // Server -> Client 
-    public static final Identifier S2CPacketIdentifierHud   = new Identifier(Beenfo.MOD_ID, "s2c_hud");     // Server -> Client
+    public static final Identifier C2SPacketIdentifierLookAt = new Identifier(Beenfo.MOD_ID, "c2s_lookAt");
+    public static final Identifier S2CPacketIdentifierMenu   = new Identifier(Beenfo.MOD_ID, "s2c_open");
+    public static final Identifier S2CPacketIdentifierHud    = new Identifier(Beenfo.MOD_ID, "s2c_hud");
 
     @Override
     public void onInitialize()
     {
-        ServerPlayNetworking.registerGlobalReceiver(C2SPacketIdentifier, (server, player, handler, buf, responseSender) -> {
-            processClientPacket(server, player, handler, buf, responseSender);
-        });
+        ServerPlayNetworking.registerGlobalReceiver(C2SPacketIdentifierLookAt, this::onClientPacketReceived);
+    }
+
+    /**
+     * Get the name of a single bee entity.
+     * @param nbt The entity data.
+     * @return The name of the bee if given any; otherwise, an empty string.
+     */
+    private static String getBeeName(@Nullable NbtCompound nbt)
+    {
+        if (nbt != null && nbt.contains("CustomName", Beenfo.NBT_TYPE_STRING))
+        {
+            return nbt.getString("CustomName");
+        }
+
+        return "";
+    }
+
+    /**
+     * Get a list of names of all the given bees.
+     * @param bees The bees to generate a name list for.
+     * @return A list with all the names of the bees.
+     */
+    private static ArrayList<String> getBeeNameList(@Nullable NbtList bees)
+    {
+        ArrayList<String> list = new ArrayList<String>();
+
+        if (bees != null)
+        {
+            for (int i = 0; i < bees.size(); i++)
+            {
+                list.add(getBeeName(bees.getCompound(i)));
+            }
+        }
+
+        return list;
     }
 
     /**
@@ -42,36 +78,11 @@ public class BeenfoServer implements ModInitializer
      * @param honeyLevel
      * @param bees
      */
-    public static void sendBeehiveInfo(ServerPlayerEntity player, int honeyLevel, @Nullable NbtList bees)
+    public static void sendBlockInfo(ServerPlayerEntity player, int honeyLevel, @Nullable NbtList bees)
     {
-        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-        buf.writeInt(honeyLevel);
-
-        if (bees == null)
-        {
-            buf.writeInt(0);
-        }
-        else
-        {
-            int beeCount = bees.size();
-            buf.writeInt(beeCount);
-
-            for (int i = 0; i < beeCount; i++)
-            {
-                NbtCompound nbt = bees.getCompound(i).getCompound("EntityData");
-                if (nbt != null && nbt.contains("CustomName", 8))
-                {
-                    String beeName = nbt.getString("CustomName");
-                    buf.writeString(beeName);
-                }
-                else
-                {
-                    buf.writeString("");
-                }
-            }
-        }
-
-        ServerPlayNetworking.send(player, S2CPacketIdentifierOpen, buf);
+        ArrayList<String> beeNames = getBeeNameList(bees);
+        BeenfoPacketMenu packet = BeenfoPacketMenu.encode(honeyLevel, beeNames);
+        ServerPlayNetworking.send(player, S2CPacketIdentifierMenu, packet);
     }
 
     /**
@@ -82,12 +93,11 @@ public class BeenfoServer implements ModInitializer
      * @param attachedData
      * @param responseSender
      */
-    private void processClientPacket(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf attachedData, PacketSender responseSender)
+    private void onClientPacketReceived(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf attachedData, PacketSender responseSender)
     {
-        int packetVersion = attachedData.readInt();
-        BlockPos blockPos = attachedData.readBlockPos();
+        BeenfoPacketLookAt packet = BeenfoPacketLookAt.decode(attachedData);
         server.execute(() -> {
-            sendHudContent(player, blockPos, responseSender);
+            sendHudContent(player, packet.blockPos, responseSender);
         });
     }
 
@@ -103,36 +113,21 @@ public class BeenfoServer implements ModInitializer
         BlockState blockState = world.getBlockState(blockPos);
 
         // TODO: verify that the block contains the data
-
         int honey = blockState.get(HONEY_LEVEL);
     
         BlockEntity entity = world.getBlockEntity(blockPos);
-        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-
-        buf.writeInt(0); // packet version
-        buf.writeInt(honey);
-
+        int beeCount = 0;
         if (entity instanceof BeehiveBlockEntity bbe)
         {
             NbtList nbt = bbe.getBees();
-
-            if (nbt == null)
+            if (nbt != null)
             {
-                buf.writeInt(0);
-            }
-            else
-            {
-                buf.writeInt(nbt.size());
+                beeCount = nbt.size();
             }
         }
-        else
-        {
-            buf.writeInt(0);
-        }
-
-        buf.writeBlockPos(blockPos);
-
-        responseSender.sendPacket(S2CPacketIdentifierHud, buf);
+        
+        BeenfoPacketHUD packet = BeenfoPacketHUD.encode(honey, beeCount, blockPos);
+        responseSender.sendPacket(S2CPacketIdentifierHud, packet);
     }
 
 }

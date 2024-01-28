@@ -1,6 +1,5 @@
 package eu.scillman.minecraft.beenfo;
 
-import eu.scillman.minecraft.beenfo.Beenfo;
 import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
@@ -16,7 +15,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 public class BeenfoScreen extends Screen
 {
-    private static final Identifier TEXTURE = new Identifier(Beenfo.MOD_ID, "textures/gui/beenfo.png");
+    private static final Identifier MENU_TEXTURE = new Identifier(Beenfo.MOD_ID, "textures/gui/menu.png");
 
     private int honeyLevel;
     private List<Text> beeNames;
@@ -62,7 +61,7 @@ public class BeenfoScreen extends Screen
 
         renderBackground(matrices, 0);
 
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderTexture(0, MENU_TEXTURE);
         { // begin of TEXTURE usage
             drawTexture(matrices, x, y, 0, 0, 176, 30); // header - honey bottle slots
 

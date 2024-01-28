@@ -18,7 +18,7 @@ repositories {
 //     splitEnvironmentSourceSets()
 
 //     mods {
-//         "beeinfo" {
+//         "${project.archives_base_name}" {
 //             sourceSet sourceSets.main
 //             sourceSet sourceSets.client
 //         }
@@ -43,7 +43,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17 // JaveVersion.VERSION_17
+    it.options.release = 17 // JavaVersion.VERSION_17
 }
 
 java {

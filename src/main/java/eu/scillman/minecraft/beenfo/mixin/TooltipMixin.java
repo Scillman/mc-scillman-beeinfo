@@ -10,7 +10,9 @@ import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import eu.scillman.minecraft.beenfo.Beenfo;
+
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
@@ -47,7 +49,7 @@ public abstract class TooltipMixin
      * @brief Called before ItemStack.getToolTip returns to the caller.
      * @param player The player to draw the tooltip for.
      * @param context The context of the tooltip.
-     * @param list __OUT__ The list that will contain the generated data.
+     * @param list A reference to local variable @e list of ItemStack.getTooltip
      */
     @Inject(method="getTooltip", at=@At("RETURN"), locals=LocalCapture.CAPTURE_FAILHARD)
     private void onGetTooltip(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<?> ci, List<Text> list)
@@ -66,10 +68,10 @@ public abstract class TooltipMixin
         }
 
         // TODO:
-        //   The original states MC 1.15 may return this as a string
+        //   The original code states MC 1.15 may return this as a string
         int honeyLevel = nbt.getCompound("BlockStateTag").getInt("honey_level");
 
-        NbtList bees = nbt.getCompound("BlockEntityTag").getList("Bees", 10); // 10 = NbtCompound.getType()
+        NbtList bees = nbt.getCompound("BlockEntityTag").getList("Bees", Beenfo.NBT_TYPE_COMPOUND);
         int beeCount = bees.size();
 
         for (int i = 0; i < beeCount; i++)
@@ -82,7 +84,7 @@ public abstract class TooltipMixin
                 continue;
             }
 
-            if (nbt.contains("CustomName", 8)) // String.getType()
+            if (nbt.contains("CustomName", Beenfo.NBT_TYPE_STRING))
             {
                 String beeName = nbt.getString("CustomName");
                 list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.name", Text.Serializer.fromJson(beeName).getString())));

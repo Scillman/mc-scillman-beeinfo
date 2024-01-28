@@ -9,8 +9,5 @@
     "beenfo.config.tt.showpopup"   : "Show a popup when you're looking at a hive or nest",
     "beenfo.config.tt.popupxpercent": "Select the popup position on the screen",
     "beenfo.config.tt.popupypercent": "Select the popup position on the screen",
-    "de.guntram.mcmod.fabrictools.true": "true",
-    "de.guntram.mcmod.fabrictools.false": "false",
-    "de.guntram.mcmod.fabrictools.color": "Color",
     "beenfo.screen.title": "title (deprecated?)"
 }

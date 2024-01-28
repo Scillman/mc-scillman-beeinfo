@@ -109,7 +109,7 @@ public class HiveInfoRenderMixin extends DrawableHelper
             PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
             buf.writeInt(0); // packet version
             buf.writeBlockPos(blockPos);
-            ClientPlayNetworking.send(BeenfoServer.C2SPacketIdentifier, buf);
+            ClientPlayNetworking.send(BeenfoServer.C2SPacketIdentifierLookAt, buf);
         }
     }
 
@@ -117,7 +117,7 @@ public class HiveInfoRenderMixin extends DrawableHelper
      * Draws the HUD on the client side.
      * @param matrices
      * @param blockState
-     * @see resources/assets/beenfo/textures/gui/ingame.png
+     * @see resources/assets/beenfo/textures/gui/hud.png
      */
     private void drawHud(MatrixStack matrices, BlockState blockState)
     {

@@ -51,7 +51,7 @@ public class BeehiveBlockUseMixin
                     tag = bbe.getBees();
                 }
 
-                BeenfoServer.sendBeehiveInfo(serverPlayer, honey, tag);
+                BeenfoServer.sendBlockInfo(serverPlayer, honey, tag);
             }
         }
     }
