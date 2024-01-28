@@ -1,0 +1,39 @@
+{
+    "schemaVersion": 1,
+    "id": "beenfo",
+    "version": "${version}",
+    "name": "Beenfo (1.19.3+)",
+    "description": "Rewritten Beenfo mod of Giselbaer for Minecraft versions 1.19.3 or newer.",
+    "authors": [
+        "Giselbaer",
+        "Scillman"
+    ],
+    "contact": {
+        "homepage": "https://github.com/Scillman/mc-scillman-beeinfo/",
+        "sources": "https://github.com/Scillman/mc-scillman-beeinfo/",
+        "issues": "https://github.com/Scillman/mc-scillman-beeinfo/issues/"
+    },
+    "license": "MIT",
+    "icon": "icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "eu.scillman.minecraft.beenfo.BeenfoServer"
+        ],
+        "client": [
+            "eu.scillman.minecraft.beenfo.BeenfoClient"
+        ]
+    },
+    "mixins": [
+        "beenfo.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.14.11",
+        "minecraft": ">=1.19.3",
+        "java": ">=17",
+        "fabric-api": ">=0.68.1"
+    },
+    "suggests": {
+        "modmenu": ">=5.1.0"
+    }
+}

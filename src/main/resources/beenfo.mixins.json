@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "package": "eu.scillman.minecraft.beenfo.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+        "BeehiveBlockUseMixin"
+    ],
+    "client": [
+        "TooltipMixin",
+        "HiveInfoRenderMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
