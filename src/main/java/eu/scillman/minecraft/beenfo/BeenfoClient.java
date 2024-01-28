@@ -18,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
  */
 public class BeenfoClient implements ClientModInitializer
 {
-    
     public static BlockPos lastHiveResponseBlockPos = null;
     public static int lastHiveResponseHoneyLevel = 0;
     public static int lastHiveResponseBeeCount = 0;

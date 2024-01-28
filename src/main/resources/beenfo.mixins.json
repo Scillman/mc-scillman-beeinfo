@@ -3,11 +3,11 @@
     "package": "eu.scillman.minecraft.beenfo.mixin",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
-        "BeehiveBlockUseMixin"
+        "BlockUseMixin"
     ],
     "client": [
         "TooltipMixin",
-        "HiveInfoRenderMixin"
+        "HudRenderMixin"
     ],
     "injectors": {
         "defaultRequire": 1

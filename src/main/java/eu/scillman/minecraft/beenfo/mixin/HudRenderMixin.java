@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 
 @Mixin(InGameHud.class)
-public class HiveInfoRenderMixin extends DrawableHelper
+public class HudRenderMixin extends DrawableHelper
 {
     /**
      * TODO:

@@ -23,7 +23,7 @@ import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BeehiveBlock.class)
-public class BeehiveBlockUseMixin
+public class BlockUseMixin
 {
     /**
      * Called when the player presses the use button when facing a Beehive block.

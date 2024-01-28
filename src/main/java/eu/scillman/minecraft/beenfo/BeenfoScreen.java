@@ -23,7 +23,8 @@ public class BeenfoScreen extends Screen
     private int x;
     private int y;
     
-    BeenfoScreen(Object object, int honeyLevel, List<String> beeNames) {
+    BeenfoScreen(Object object, int honeyLevel, List<String> beeNames)
+    {
         super(Text.translatable("beenfo.screen.title"));
 
         this.honeyLevel = honeyLevel;
@@ -43,12 +44,13 @@ public class BeenfoScreen extends Screen
         super.init();
 
         int minRows = Math.min(3, beeNames.size());
-        int usedHeight = 30 + (minRows * 30) + 8;
+        int usedHeight = 30 + (minRows * 30) + 8; // minRows = 0, beeCount = 0
 
         this.x = (this.width - 176) / 2;
         this.y = (this.height - usedHeight) / 2;
 
         // TODO: this is likely where my bug came from, double check
+        Beenfo.LOGGER.info("BeenfoMenu beeCount="+beeNames.size()+" usedHeight="+usedHeight+" height="+this.height);
     }
 
     @Override
