@@ -1,8 +1,9 @@
 package eu.scillman.minecraft.beenfo.network;
 
 import io.netty.buffer.Unpooled;
-import net.minecraft.network.PacketByteBuf;
+import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.network.PacketByteBuf;
 
 /**
  * @brief Packet send from the server to the client with the beehive/nest menu information.
@@ -57,7 +58,7 @@ public class BeenfoPacketMenu extends PacketByteBuf
         honeyLevel  = readInt();
         beeCount    = readInt();
 
-        beeNames.clear();
+        beeNames = new ArrayList<String>();
         for (int i = 0; i < beeCount; i++)
         {
             beeNames.add(readString());

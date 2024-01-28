@@ -1,8 +1,8 @@
 package eu.scillman.minecraft.beenfo.network;
 
 import io.netty.buffer.Unpooled;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * @brief Packet send from the server to the client with the beehive/nest HUD information.

@@ -3,7 +3,7 @@ package eu.scillman.minecraft.beenfo.mixin;
 import com.mojang.blaze3d.systems.RenderSystem;
 import eu.scillman.minecraft.beenfo.BeenfoClient;
 import eu.scillman.minecraft.beenfo.BeenfoServer;
-import io.netty.buffer.Unpooled;
+import eu.scillman.minecraft.beenfo.network.BeenfoPacketLookAt;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawableHelper;
@@ -11,7 +11,6 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.OrderedText;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -19,11 +18,11 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
 public class HiveInfoRenderMixin extends DrawableHelper
@@ -106,10 +105,8 @@ public class HiveInfoRenderMixin extends DrawableHelper
             lastHiveRequestBlockPos = blockPos;
             lastHiveRequestTime = now;
     
-            PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-            buf.writeInt(0); // packet version
-            buf.writeBlockPos(blockPos);
-            ClientPlayNetworking.send(BeenfoServer.C2SPacketIdentifierLookAt, buf);
+            BeenfoPacketLookAt packet = BeenfoPacketLookAt.encode(blockPos);
+            ClientPlayNetworking.send(BeenfoServer.C2SPacketIdentifierLookAt, packet);
         }
     }
 

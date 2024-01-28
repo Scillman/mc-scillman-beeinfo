@@ -27,7 +27,7 @@ import java.util.ArrayList;;
 
 public class BeenfoServer implements ModInitializer
 {
-    public static final Identifier C2SPacketIdentifierLookAt = new Identifier(Beenfo.MOD_ID, "c2s_lookAt");
+    public static final Identifier C2SPacketIdentifierLookAt = new Identifier(Beenfo.MOD_ID, "c2s_lookat");
     public static final Identifier S2CPacketIdentifierMenu   = new Identifier(Beenfo.MOD_ID, "s2c_open");
     public static final Identifier S2CPacketIdentifierHud    = new Identifier(Beenfo.MOD_ID, "s2c_hud");
 
@@ -65,7 +65,7 @@ public class BeenfoServer implements ModInitializer
         {
             for (int i = 0; i < bees.size(); i++)
             {
-                list.add(getBeeName(bees.getCompound(i)));
+                list.add(getBeeName(bees.getCompound(i).getCompound("EntityData")));
             }
         }
 
