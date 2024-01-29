@@ -13,9 +13,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-/**
- * TODO: create a buffer/packet class for reading/writing
- */
 public class BeenfoClient implements ClientModInitializer
 {
     public static BlockPos lastHiveResponseBlockPos = null;
@@ -39,7 +36,7 @@ public class BeenfoClient implements ClientModInitializer
     {
         BeenfoPacketMenu packet = BeenfoPacketMenu.decode(buffer);
         client.execute(() -> {
-            client.setScreen(new BeenfoScreen(null, packet.honeyLevel, packet.beeNames));
+            client.setScreen(new BeenfoScreen(packet.honeyLevel, packet.beeNames));
         });
     }
 

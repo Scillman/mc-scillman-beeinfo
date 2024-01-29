@@ -7,7 +7,8 @@
     ],
     "client": [
         "TooltipMixin",
-        "HudRenderMixin"
+        "HudRenderMixin",
+        "LookAtMixin"
     ],
     "injectors": {
         "defaultRequire": 1

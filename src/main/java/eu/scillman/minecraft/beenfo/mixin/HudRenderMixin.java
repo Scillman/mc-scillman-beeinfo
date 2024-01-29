@@ -9,8 +9,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.text.OrderedText;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -28,12 +29,6 @@ import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 public class HudRenderMixin extends DrawableHelper
 {
     /**
-     * TODO:
-     *   Ensure this matches the default Minecraft interaction distance.
-     */
-    private static final double BLOCK_INTERACTION_DISTANCE = 20.0d;
-
-    /**
      * @brief A reference to InGameHud.MinecraftClient client
      */
     @Shadow
@@ -45,7 +40,7 @@ public class HudRenderMixin extends DrawableHelper
      * @remarks Format is milliseconds in local machine time.
      */
     private long lastHiveRequestTime = 0;
-    
+
     /**
      * @brief The block that was last interacted with.
      */
@@ -58,23 +53,23 @@ public class HudRenderMixin extends DrawableHelper
     @Inject(method="renderStatusEffectOverlay", at=@At("RETURN"))
     private void onRenderStatusEffectsOverlay(MatrixStack matrices, CallbackInfo ci)
     {
-        Entity entity = client.getCameraEntity();
-        HitResult blockHit = entity.raycast(BLOCK_INTERACTION_DISTANCE, 0, false);
-        
-        // NOTE: The raycast should never return NULL, double check before removing
-        //ASSERT(blockHit != null);
-        if (blockHit == null) 
+        @Nullable HitResult crosshairTarget = client.crosshairTarget;
+        @Nullable ClientPlayerEntity player = client.player;
+        @Nullable ClientWorld world = client.world;
+
+        if (crosshairTarget == null || player == null || world == null)
         {
             return;
         }
 
-        if (blockHit.getType() != HitResult.Type.BLOCK)
+        if (crosshairTarget.getType() != HitResult.Type.BLOCK)
         {
             return;
         }
 
-        BlockPos blockPos = ((BlockHitResult)(blockHit)).getBlockPos();
-        BlockState blockState = client.world.getBlockState(blockPos);
+        BlockHitResult hitResult = ((BlockHitResult)(crosshairTarget));
+        BlockPos blockPos = hitResult.getBlockPos();
+        BlockState blockState = world.getBlockState(blockPos);
 
         // This allows both Beehive and Bee Nest, as well as potential future additions.
         if (!blockState.contains(HONEY_LEVEL))
@@ -82,6 +77,7 @@ public class HudRenderMixin extends DrawableHelper
             return;
         }
 
+        // TODO: separate the lookAt and drawHud logic so that they both have different classes
         notifyServer(blockPos);
         drawHud(matrices, blockState);
     }
@@ -101,10 +97,10 @@ public class HudRenderMixin extends DrawableHelper
             {
                 BeenfoClient.lastHiveResponseBeeCount = 0;
             }
-    
+
             lastHiveRequestBlockPos = blockPos;
             lastHiveRequestTime = now;
-    
+
             BeenfoPacketLookAt packet = BeenfoPacketLookAt.encode(blockPos);
             ClientPlayNetworking.send(BeenfoServer.C2SPacketIdentifierLookAt, packet);
         }
@@ -141,7 +137,7 @@ public class HudRenderMixin extends DrawableHelper
         if (BeenfoClient.lastHiveResponseBeeCount >= 1) drawTexture(matrices, x+14, y+37, 83, 2, 13, 12);
         if (BeenfoClient.lastHiveResponseBeeCount >= 2) drawTexture(matrices, x+34, y+37, 83, 2, 13, 12);
         if (BeenfoClient.lastHiveResponseBeeCount >= 3) drawTexture(matrices, x+54, y+37, 83, 2, 13, 12);
-    
+
         // Draws the name of the block (TODO: check if this supports custom names)
         OrderedText orderedText = blockState.getBlock().getName().asOrderedText();
         client.textRenderer.draw(matrices, orderedText, (float)(

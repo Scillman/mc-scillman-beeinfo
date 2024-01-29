@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BlockUseMixin
 {
     /**
-     * Called when the player presses the use button when facing a Beehive block.
+     * Called when the player presses the use button when facing a Beehive/Bee Nest block.
      * @param state The state of the block the player is facing.
      * @param world The world the player resides in. (Overworld, Nether, The End)
      * @param pos The position of the block inside the world.
