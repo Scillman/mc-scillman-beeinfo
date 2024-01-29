@@ -13,6 +13,9 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+/**
+ * @brief The screen used for rendering the menu.
+ */
 public class BeenfoScreen extends Screen
 {
     private static final Identifier MENU_TEXTURE = new Identifier(Beenfo.MOD_ID, "textures/gui/menu.png");

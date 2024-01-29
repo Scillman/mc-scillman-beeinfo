@@ -16,7 +16,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.World;
@@ -27,14 +26,10 @@ import java.util.ArrayList;;
 
 public class BeenfoServer implements ModInitializer
 {
-    public static final Identifier C2SPacketIdentifierLookAt = new Identifier(Beenfo.MOD_ID, "c2s_lookat");
-    public static final Identifier S2CPacketIdentifierMenu   = new Identifier(Beenfo.MOD_ID, "s2c_open");
-    public static final Identifier S2CPacketIdentifierHud    = new Identifier(Beenfo.MOD_ID, "s2c_hud");
-
     @Override
     public void onInitialize()
     {
-        ServerPlayNetworking.registerGlobalReceiver(C2SPacketIdentifierLookAt, this::onClientPacketReceived);
+        ServerPlayNetworking.registerGlobalReceiver(Beenfo.PACKET_ID_LOOKAT, BeenfoServer::onLookAtPacketReceived);
     }
 
     /**
@@ -82,52 +77,78 @@ public class BeenfoServer implements ModInitializer
     {
         ArrayList<String> beeNames = getBeeNameList(bees);
         BeenfoPacketMenu packet = BeenfoPacketMenu.encode(honeyLevel, beeNames);
-        ServerPlayNetworking.send(player, S2CPacketIdentifierMenu, packet);
+        ServerPlayNetworking.send(player, Beenfo.PACKET_ID_MENU, packet);
     }
 
     /**
-     * @brief Process the packet which is sent by the client when looking at a hive.
-     * @param server
-     * @param player
-     * @param handler
-     * @param attachedData
-     * @param responseSender
+     * @brief Called when a lookAt pakket has been received from a client.
+     * @param server The server that received the request.
+     * @param player The player that send the request.
+     * @param handler The player's networking handler.
+     * @param attachedData The data that was send.
+     * @param responseSender The socket to send the response to.
      */
-    private void onClientPacketReceived(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf attachedData, PacketSender responseSender)
+    private static void onLookAtPacketReceived(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf attachedData, PacketSender responseSender)
     {
         BeenfoPacketLookAt packet = BeenfoPacketLookAt.decode(attachedData);
         server.execute(() -> {
-            sendHudContent(player, packet.blockPos, responseSender);
+            sendHudContentToClient(player, packet.blockPos, responseSender);
         });
     }
 
     /**
-     * @brief
-     * @param player
-     * @param pos
-     * @param responseSender
+     * @brief Sends the required HUD content to the client.
+     * @param player The player that requested the data.
+     * @param blockPos The position of the block.
+     * @param responseSender The socket to send the response to.
      */
-    private void sendHudContent(ServerPlayerEntity player, BlockPos blockPos, PacketSender responseSender)
+    private static void sendHudContentToClient(ServerPlayerEntity player, BlockPos blockPos, PacketSender responseSender)
     {
+        if (!isHoneyBeeContainer(player.world, blockPos))
+        {
+            return;
+        }
+
         World world = player.world;
         BlockState blockState = world.getBlockState(blockPos);
 
-        // TODO: verify that the block contains the data
         int honey = blockState.get(HONEY_LEVEL);
-    
+        int beeCount = getBeeCount(world, blockPos);
+
+        BeenfoPacketHUD packet = BeenfoPacketHUD.encode(honey, beeCount, blockPos);
+        responseSender.sendPacket(Beenfo.PACKET_ID_HUD, packet);
+    }
+
+    /**
+     * @brief Determines if the block is a honey bee container.
+     * @param world The world the player is in. (e.g. Overworld, Nether, The End)
+     * @param blockPos The position of the block.
+     * @return True if the block is a honey bee container; otherwise, false.
+     */
+    private static boolean isHoneyBeeContainer(World world, BlockPos blockPos)
+    {
+        BlockState blockState = world.getBlockState(blockPos);
+        return blockState.contains(HONEY_LEVEL);
+    }
+
+    /**
+     * @brief Get the number of bees inside the honey bee container.
+     * @param world The world the player is in. (e.g. Overworld, Nether, The End)
+     * @param blockPos The position of the block.
+     * @return The number of bees inside the honey bee container.
+     */
+    private static int getBeeCount(World world, BlockPos blockPos)
+    {
         BlockEntity entity = world.getBlockEntity(blockPos);
-        int beeCount = 0;
         if (entity instanceof BeehiveBlockEntity bbe)
         {
             NbtList nbt = bbe.getBees();
             if (nbt != null)
             {
-                beeCount = nbt.size();
+                return nbt.size();
             }
         }
-        
-        BeenfoPacketHUD packet = BeenfoPacketHUD.encode(honey, beeCount, blockPos);
-        responseSender.sendPacket(S2CPacketIdentifierHud, packet);
-    }
 
+        return 0;
+    }
 }

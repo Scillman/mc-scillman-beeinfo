@@ -1,6 +1,7 @@
 package eu.scillman.minecraft.beenfo.mixin;
 
-import eu.scillman.minecraft.beenfo.BeenfoServer;
+import eu.scillman.minecraft.beenfo.Beenfo;
+import eu.scillman.minecraft.beenfo.BeenfoClient;
 import eu.scillman.minecraft.beenfo.network.BeenfoPacketLookAt;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -21,59 +22,98 @@ import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 @Mixin(MinecraftClient.class)
 public class LookAtMixin
 {
+    /**
+     * @brief The target the player is looking at.
+     */
     @Shadow
     @Nullable
     public HitResult crosshairTarget;
 
+    /**
+     * @brief The player.
+     */
     @Shadow
     @Nullable
     public ClientPlayerEntity player;
 
+    /**
+     * @brief The world the player is in.
+     * @remarks E.g. Overworld, Nether, The End
+     */
     @Shadow
     @Nullable
     public ClientWorld world;
 
+    /**
+     * @brief The last time a notification has been send to the server.
+     * @remarks Local machine time in ms when last send.
+     */
     private long lastUpdateTime = 0;
 
+    /**
+     * @brief The position of the block the server was last notified of.
+     */
     @Nullable
     private BlockPos lastUpdateBlockPos = null;
 
     /**
      * @brief Called when the render has ended.
-     * @param tick Whether to
-     * @param ci
+     * @param tick N/A
+     * @param ci Mixin callback information.
      */
     @Inject(method="render", at=@At("RETURN"))
     private void onRender(boolean tick, CallbackInfo ci)
     {
-        if (/*tick == false ||*/ crosshairTarget == null || player == null || world == null)
+        if (crosshairTarget == null || player == null || world == null)
         {
             return;
         }
 
-        if (crosshairTarget.getType() != HitResult.Type.BLOCK)
+        if (isHoneyBeeContainer(crosshairTarget))
         {
-            return;
+            // Notifies the server about the honey bee container
+            // the player is looking at; in turn the server will
+            // send the information about the block and its
+            // contents back to the client.
+            notifyLookAtHoneyBeeContainer(crosshairTarget);
         }
-
-        BlockHitResult result = ((BlockHitResult)(crosshairTarget));
-        BlockPos blockPos = result.getBlockPos();
-        BlockState blockState = world.getBlockState(blockPos);
-
-        if (!blockState.contains(HONEY_LEVEL))
+        else
         {
-            return;
+            // The player does not look at a honey bee container.
+            // Instead of sending a request to update the value,
+            // reset the local variables instead.
+            BeenfoClient.resetLookAtBlock();
         }
-
-        notifyServer(blockPos);
     }
 
     /**
-     * @brief Notifies the server about the block the player is looking at.
-     * @param blockPos The position of the block the player is looking at.
+     * @brief Determines if the player is looking at a honey bee container.
+     * @param crosshairTarget The crosshair target.
+     * @return True if the player is looking at a honey bee container; otherwise, false.
      */
-    private void notifyServer(BlockPos blockPos)
+    private boolean isHoneyBeeContainer(HitResult crosshairTarget)
     {
+        if (crosshairTarget.getType() != HitResult.Type.BLOCK)
+        {
+            return false;
+        }
+
+        BlockHitResult targetBlock = ((BlockHitResult)(crosshairTarget));
+        BlockPos blockPos = targetBlock.getBlockPos();
+        BlockState blockState = world.getBlockState(blockPos);
+
+        return blockState.contains(HONEY_LEVEL);
+    }
+
+    /**
+     * @brief Notifies the server about the honey bee block the player is looking at.
+     * @param crosshairTarget The target the player is looking at.
+     * @remarks When called the player is confirmed to be looking at a honey bee container.
+     */
+    private void notifyLookAtHoneyBeeContainer(HitResult crosshairTarget)
+    {
+        BlockPos blockPos = ((BlockHitResult)(crosshairTarget)).getBlockPos();
+
         if (!shouldSendUpdate(blockPos))
         {
             return;
@@ -83,7 +123,7 @@ public class LookAtMixin
         lastUpdateBlockPos = blockPos;
 
         BeenfoPacketLookAt packet = BeenfoPacketLookAt.encode(blockPos);
-        ClientPlayNetworking.send(BeenfoServer.C2SPacketIdentifierLookAt, packet);
+        ClientPlayNetworking.send(Beenfo.PACKET_ID_LOOKAT, packet);
     }
 
     /**
@@ -94,7 +134,7 @@ public class LookAtMixin
     private boolean shouldSendUpdate(BlockPos blockPos)
     {
         long now = System.currentTimeMillis();
-        if (now > (lastUpdateTime + 100))
+        if (now > (lastUpdateTime + 100)) // 0.1 second = 2 game ticks
         {
             return true;
         }

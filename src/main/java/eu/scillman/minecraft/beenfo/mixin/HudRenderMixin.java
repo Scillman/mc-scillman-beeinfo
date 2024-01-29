@@ -2,19 +2,12 @@ package eu.scillman.minecraft.beenfo.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import eu.scillman.minecraft.beenfo.BeenfoClient;
-import eu.scillman.minecraft.beenfo.BeenfoServer;
-import eu.scillman.minecraft.beenfo.network.BeenfoPacketLookAt;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.text.OrderedText;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -28,23 +21,10 @@ import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 @Mixin(InGameHud.class)
 public class HudRenderMixin extends DrawableHelper
 {
-    /**
-     * @brief A reference to InGameHud.MinecraftClient client
-     */
     @Shadow
     @Final
+    @Nullable
     private MinecraftClient client;
-
-    /**
-     * @brief The last time a notification/request has been send to the server.
-     * @remarks Format is milliseconds in local machine time.
-     */
-    private long lastHiveRequestTime = 0;
-
-    /**
-     * @brief The block that was last interacted with.
-     */
-    private @Nullable BlockPos lastHiveRequestBlockPos = null;
 
     /**
      * @brief Called just before InGameHud.renderStatusEffectOverlay returns to the caller.
@@ -53,63 +33,43 @@ public class HudRenderMixin extends DrawableHelper
     @Inject(method="renderStatusEffectOverlay", at=@At("RETURN"))
     private void onRenderStatusEffectsOverlay(MatrixStack matrices, CallbackInfo ci)
     {
-        @Nullable HitResult crosshairTarget = client.crosshairTarget;
-        @Nullable ClientPlayerEntity player = client.player;
-        @Nullable ClientWorld world = client.world;
-
-        if (crosshairTarget == null || player == null || world == null)
+        if (client == null || client.player == null || client.world == null)
         {
             return;
         }
 
-        if (crosshairTarget.getType() != HitResult.Type.BLOCK)
+        if (client.player.isSpectator())
         {
             return;
         }
 
-        BlockHitResult hitResult = ((BlockHitResult)(crosshairTarget));
-        BlockPos blockPos = hitResult.getBlockPos();
-        BlockState blockState = world.getBlockState(blockPos);
+        BlockPos blockPos = BeenfoClient.lastHiveResponseBlockPos;
 
-        // This allows both Beehive and Bee Nest, as well as potential future additions.
-        if (!blockState.contains(HONEY_LEVEL))
+        // It is possible for a block to have been destroyed locally but not
+        // yet having received new lookAt data. Therefor it is imperative
+        // to check if the block is a honey bee container.
+        if (blockPos == null || !isHoneyBeeContainer(blockPos))
         {
             return;
         }
 
-        // TODO: separate the lookAt and drawHud logic so that they both have different classes
-        notifyServer(blockPos);
-        drawHud(matrices, blockState);
+        drawHud(matrices, client.world.getBlockState(blockPos));
     }
 
     /**
-     * @brief Notifies the server that the client interacting with a beehive/beenest
-     * @param blockPos The position of the block that the player is interacting with.
+     * @brief Determines if the block is a honey bee container block.
+     * @param blockPos The position of the block.
+     * @return True if the block is a honey bee container; otherwise, false.
      */
-    private void notifyServer(BlockPos blockPos)
+    private boolean isHoneyBeeContainer(BlockPos blockPos)
     {
-        long now = System.currentTimeMillis();
-        boolean sameBlock = blockPos.equals(lastHiveRequestBlockPos);
-
-        if (now > (lastHiveRequestTime + 100) || !sameBlock)
-        {
-            if (!sameBlock)
-            {
-                BeenfoClient.lastHiveResponseBeeCount = 0;
-            }
-
-            lastHiveRequestBlockPos = blockPos;
-            lastHiveRequestTime = now;
-
-            BeenfoPacketLookAt packet = BeenfoPacketLookAt.encode(blockPos);
-            ClientPlayNetworking.send(BeenfoServer.C2SPacketIdentifierLookAt, packet);
-        }
+        BlockState blockState = client.world.getBlockState(blockPos);
+        return blockState.contains(HONEY_LEVEL);
     }
 
     /**
      * Draws the HUD on the client side.
      * @param matrices
-     * @param blockState
      * @see resources/assets/beenfo/textures/gui/hud.png
      */
     private void drawHud(MatrixStack matrices, BlockState blockState)
@@ -126,7 +86,7 @@ public class HudRenderMixin extends DrawableHelper
         drawTexture(matrices, x, y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
 
         // Fills the honey slots with honey if the respective level is met
-        int honey = blockState.get(HONEY_LEVEL);
+        int honey = BeenfoClient.lastHiveResponseHoneyLevel; //blockState.get(HONEY_LEVEL);
         if (honey >= 1) drawTexture(matrices, x+17, y+16, 84, 17, 6, 7);
         if (honey >= 2) drawTexture(matrices, x+24, y+22, 84, 17, 6, 7);
         if (honey >= 3) drawTexture(matrices, x+31, y+16, 84, 17, 6, 7);
@@ -138,7 +98,7 @@ public class HudRenderMixin extends DrawableHelper
         if (BeenfoClient.lastHiveResponseBeeCount >= 2) drawTexture(matrices, x+34, y+37, 83, 2, 13, 12);
         if (BeenfoClient.lastHiveResponseBeeCount >= 3) drawTexture(matrices, x+54, y+37, 83, 2, 13, 12);
 
-        // Draws the name of the block (TODO: check if this supports custom names)
+        // Draws the name of the block
         OrderedText orderedText = blockState.getBlock().getName().asOrderedText();
         client.textRenderer.draw(matrices, orderedText, (float)(
             x + 41 - (client.textRenderer.getWidth(orderedText) / 2)

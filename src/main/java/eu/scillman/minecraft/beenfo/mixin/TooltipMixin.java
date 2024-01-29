@@ -1,25 +1,23 @@
 package eu.scillman.minecraft.beenfo.mixin;
 
+import eu.scillman.minecraft.beenfo.Beenfo;
+import java.util.List;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import eu.scillman.minecraft.beenfo.Beenfo;
-
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.text.Text;
-import java.util.List;
 
 @Mixin(ItemStack.class)
 public abstract class TooltipMixin
@@ -30,7 +28,7 @@ public abstract class TooltipMixin
      */
     @Shadow
     public abstract boolean isEmpty();
-    
+
     /**
      * @brief A reference to the ItemStack.getItem()
      * @return Items.AIR when empty; otherwise, the item inside the stack.
@@ -55,7 +53,7 @@ public abstract class TooltipMixin
     private void onGetTooltip(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<?> ci, List<Text> list)
     {
         // Must be a block capable of containing honey
-        if (!isHoneyContainer())
+        if (!isHoneyBeeContainer())
         {
             return;
         }
@@ -77,7 +75,7 @@ public abstract class TooltipMixin
         for (int i = 0; i < beeCount; i++)
         {
             nbt = bees.getCompound(i).getCompound("EntityData");
-            
+
             //ASSERT(nbt != null);
             if (nbt == null)
             {
@@ -99,7 +97,7 @@ public abstract class TooltipMixin
      * @brief Get an indicator whether the item is capable of containing honey.
      * @return True if the item is capable of containing honey; otherwise, false.
      */
-    private boolean isHoneyContainer()
+    private boolean isHoneyBeeContainer()
     {
         return !isEmpty() && (getItem() == Items.BEEHIVE || getItem() == Items.BEE_NEST);
     }

@@ -1,5 +1,7 @@
 package eu.scillman.minecraft.beenfo;
 
+import org.jetbrains.annotations.Nullable;
+
 import eu.scillman.minecraft.beenfo.network.BeenfoPacketHUD;
 import eu.scillman.minecraft.beenfo.network.BeenfoPacketMenu;
 import net.fabricmc.api.ClientModInitializer;
@@ -15,24 +17,39 @@ import net.minecraft.util.math.BlockPos;
 
 public class BeenfoClient implements ClientModInitializer
 {
+    @Nullable
     public static BlockPos lastHiveResponseBlockPos = null;
     public static int lastHiveResponseHoneyLevel = 0;
     public static int lastHiveResponseBeeCount = 0;
 
+    /**
+     * @brief The texture used for rendering the HUD.
+     */
     public static Identifier HUD_TEXTURE;
 
+    /**
+     * @brief Called when initializing the client-side of the mod.
+     * @remarks Not called for the server.jar
+     */
     @Environment(EnvType.CLIENT)
     @Override
     public void onInitializeClient()
     {
         HUD_TEXTURE = new Identifier(Beenfo.MOD_ID, "textures/gui/hud.png");
 
-        ClientPlayNetworking.registerGlobalReceiver(BeenfoServer.S2CPacketIdentifierMenu, this::onReceiveHiveInfoMenu);
-        ClientPlayNetworking.registerGlobalReceiver(BeenfoServer.S2CPacketIdentifierHud, this::onReceiveHiveInfoHud);
+        ClientPlayNetworking.registerGlobalReceiver(Beenfo.PACKET_ID_MENU, BeenfoClient::onReceiveContainerInfoMenu);
+        ClientPlayNetworking.registerGlobalReceiver(Beenfo.PACKET_ID_HUD, BeenfoClient::onReceiveContainerInfoHud);
     }
 
+    /**
+     * @brief Called when a packet was received containing the information to display inside the menu.
+     * @param client The client that has received the packet.
+     * @param handler The client's networking handler.
+     * @param buffer The data that has been received from the server.
+     * @param responseSender The socket to use to send information back to the server.
+     */
     @Environment(EnvType.CLIENT)
-    private void onReceiveHiveInfoMenu(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender responseSender)
+    private static void onReceiveContainerInfoMenu(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender responseSender)
     {
         BeenfoPacketMenu packet = BeenfoPacketMenu.decode(buffer);
         client.execute(() -> {
@@ -40,13 +57,28 @@ public class BeenfoClient implements ClientModInitializer
         });
     }
 
+    /**
+     * @brief Called when a packet was received containing information to display inside the HUD.
+     * @param client  The client that has received the packet.
+     * @param handler The client's networking handler.
+     * @param buffer The data thas has been received from the server.
+     * @param responseSender The socket to use to send information back to the server.
+     */
     @Environment(EnvType.CLIENT)
-    private void onReceiveHiveInfoHud(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender responseSender)
+    private static void onReceiveContainerInfoHud(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender responseSender)
     {
         BeenfoPacketHUD packet = BeenfoPacketHUD.decode(buffer);
 
         lastHiveResponseHoneyLevel = packet.honeyLevel;
         lastHiveResponseBeeCount = packet.beeCount;
         lastHiveResponseBlockPos = packet.blockPos;
+    }
+
+    /**
+     * @brief Call to reset the lookat block of the client.
+     */
+    public static void resetLookAtBlock()
+    {
+        lastHiveResponseBlockPos = null;
     }
 }
