@@ -73,7 +73,7 @@ public class BeenfoScreen extends Screen
                 if (i < beeNames.size())
                 {
                     // Bee icon
-                    drawTexture(matrices, x+9, y+33+(i*30), 0, 166, 22, 22);
+                    drawTexture(matrices, x+9, y+32+(i*30), 0, 166, 22, 22);
                 }
             }
             drawTexture(matrices, x, y+30+(minRows*30), 0, 157, 176, 8); // footer
