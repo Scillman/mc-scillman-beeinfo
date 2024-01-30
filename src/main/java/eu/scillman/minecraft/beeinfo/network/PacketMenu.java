@@ -1,4 +1,4 @@
-package eu.scillman.minecraft.beenfo.network;
+package eu.scillman.minecraft.beeinfo.network;
 
 import io.netty.buffer.Unpooled;
 import java.util.ArrayList;

@@ -1,26 +1,23 @@
-package eu.scillman.minecraft.beenfo.gui;
+package eu.scillman.minecraft.beeinfo.gui;
 
 import java.util.List;
-
-import org.lwjgl.glfw.GLFW;
-
+import com.mojang.blaze3d.systems.RenderSystem;
+import eu.scillman.minecraft.beeinfo.BeeInfo;
+import java.util.ArrayList;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import java.util.ArrayList;
-import com.mojang.blaze3d.systems.RenderSystem;
-
-import eu.scillman.minecraft.beenfo.Beenfo;
+import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * @brief The screen used for rendering the menu.
  */
 public class InGameMenu extends Screen
 {
-    private static final Identifier MENU_TEXTURE = new Identifier(Beenfo.MOD_ID, "textures/gui/menu.png");
+    private static final Identifier MENU_TEXTURE = new Identifier(BeeInfo.MOD_ID, "textures/gui/menu.png");
 
     private int honeyLevel;
     private List<Text> beeNames;
@@ -30,7 +27,7 @@ public class InGameMenu extends Screen
 
     public InGameMenu(int honeyLevel, List<String> beeNames)
     {
-        super(Text.translatable("beenfo.screen.title"));
+        super(Text.translatable("beeinfo.screen.title"));
 
         this.honeyLevel = honeyLevel;
         this.beeNames = new ArrayList<Text>(beeNames.size());

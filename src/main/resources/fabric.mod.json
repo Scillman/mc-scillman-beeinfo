@@ -1,8 +1,8 @@
 {
     "schemaVersion": 1,
-    "id": "beenfo",
+    "id": "beeinfo",
     "version": "${version}",
-    "name": "Beenfo (1.19.3+)",
+    "name": "BeeInfo (1.19.3+)",
     "description": "Rewritten Beenfo mod of Giselbaer for Minecraft versions 1.19.3 or newer.",
     "authors": [
         "Giselbaer",
@@ -18,17 +18,17 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "eu.scillman.minecraft.beenfo.BeenfoServer"
+            "eu.scillman.minecraft.beeinfo.BeeInfoServer"
         ],
         "client": [
-            "eu.scillman.minecraft.beenfo.BeenfoClient"
+            "eu.scillman.minecraft.beeinfo.BeeInfoClient"
         ],
         "modmenu": [
-            "eu.scillman.minecraft.beenfo.gui.OptionsMenu"
+            "eu.scillman.minecraft.beeinfo.gui.OptionsMenu"
         ]
     },
     "mixins": [
-        "beenfo.mixins.json"
+        "beeinfo.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.14.11",

@@ -1,4 +1,4 @@
-package eu.scillman.minecraft.beenfo.gui;
+package eu.scillman.minecraft.beeinfo.gui;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -9,6 +9,6 @@ public class OptionsMenu implements ModMenuApi
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory()
     {
-        return screen -> new eu.scillman.minecraft.beenfo.gui.OptionsScreen(Text.literal("Bee Information Tweaks"));
+        return screen -> new eu.scillman.minecraft.beeinfo.gui.OptionsScreen(Text.literal("Bee Information Tweaks"));
     }
 }

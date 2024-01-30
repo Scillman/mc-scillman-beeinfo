@@ -1,12 +1,12 @@
-package eu.scillman.minecraft.beenfo;
+package eu.scillman.minecraft.beeinfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.minecraft.util.Identifier;
 
-public final class Beenfo
+public final class BeeInfo
 {
-    public static final String MOD_ID = "beenfo";
+    public static final String MOD_ID = "beeinfo";
 
     public static final int NBT_TYPE_INT        = 0x03; // net.minecraft.nbt.NbtInt.getType()
     public static final int NBT_TYPE_LONG       = 0x04; // net.minecraft.nbt.NbtLong.getType()

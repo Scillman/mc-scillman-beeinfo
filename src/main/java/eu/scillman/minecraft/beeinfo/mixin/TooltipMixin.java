@@ -1,6 +1,5 @@
-package eu.scillman.minecraft.beenfo.mixin;
+package eu.scillman.minecraft.beeinfo.mixin;
 
-import eu.scillman.minecraft.beenfo.Beenfo;
 import java.util.List;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.resource.language.I18n;
@@ -15,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import eu.scillman.minecraft.beeinfo.BeeInfo;
+
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -69,7 +71,7 @@ public abstract class TooltipMixin
         //   The original code states MC 1.15 may return this as a string
         int honeyLevel = nbt.getCompound("BlockStateTag").getInt("honey_level");
 
-        NbtList bees = nbt.getCompound("BlockEntityTag").getList("Bees", Beenfo.NBT_TYPE_COMPOUND);
+        NbtList bees = nbt.getCompound("BlockEntityTag").getList("Bees", BeeInfo.NBT_TYPE_COMPOUND);
         int beeCount = bees.size();
 
         for (int i = 0; i < beeCount; i++)
@@ -82,7 +84,7 @@ public abstract class TooltipMixin
                 continue;
             }
 
-            if (nbt.contains("CustomName", Beenfo.NBT_TYPE_STRING))
+            if (nbt.contains("CustomName", BeeInfo.NBT_TYPE_STRING))
             {
                 String beeName = nbt.getString("CustomName");
                 list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.name", Text.Serializer.fromJson(beeName).getString())));

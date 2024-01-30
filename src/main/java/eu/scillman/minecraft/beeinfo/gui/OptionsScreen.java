@@ -1,7 +1,7 @@
-package eu.scillman.minecraft.beenfo.gui;
+package eu.scillman.minecraft.beeinfo.gui;
 
-import eu.scillman.minecraft.beenfo.Beenfo;
 import net.fabricmc.api.Environment;
+import eu.scillman.minecraft.beeinfo.BeeInfo;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -30,13 +30,13 @@ public class OptionsScreen extends Screen
     private void onToggleHUD(CyclingButtonWidget<Boolean> sender, Boolean value)
     {
         assert(sender == buttonToggleHUD);
-        Beenfo.LOGGER.info("Enable HUD = " + value);
+        BeeInfo.LOGGER.info("Enable HUD = " + value);
     }
 
     private void onToggleMenu(CyclingButtonWidget<Boolean> sender, Boolean value)
     {
         assert(sender == buttonToggleMenu);
-        Beenfo.LOGGER.info("Enable Menu = " + value);
+        BeeInfo.LOGGER.info("Enable Menu = " + value);
     }
 
     @Override

@@ -1,7 +1,8 @@
-package eu.scillman.minecraft.beenfo.mixin;
+package eu.scillman.minecraft.beeinfo.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import eu.scillman.minecraft.beenfo.BeenfoClient;
+
+import eu.scillman.minecraft.beeinfo.BeeInfoClient;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -43,7 +44,7 @@ public class HudRenderMixin extends DrawableHelper
             return;
         }
 
-        BlockPos blockPos = BeenfoClient.lastHiveResponseBlockPos;
+        BlockPos blockPos = BeeInfoClient.lastHiveResponseBlockPos;
 
         // It is possible for a block to have been destroyed locally but not
         // yet having received new lookAt data. Therefor it is imperative
@@ -70,7 +71,7 @@ public class HudRenderMixin extends DrawableHelper
     /**
      * Draws the HUD on the client side.
      * @param matrices
-     * @see resources/assets/beenfo/textures/gui/hud.png
+     * @see resources/assets/beeinfo/textures/gui/hud.png
      */
     private void drawHud(MatrixStack matrices, BlockState blockState)
     {
@@ -78,7 +79,7 @@ public class HudRenderMixin extends DrawableHelper
         final int HUD_HEIGHT = 59;
 
         // The texture to use for rendering.
-        RenderSystem.setShaderTexture(0, BeenfoClient.HUD_TEXTURE);
+        RenderSystem.setShaderTexture(0, BeeInfoClient.HUD_TEXTURE);
 
         // Draw the background texture
         int x = (client.getWindow().getScaledWidth() - HUD_WIDTH) * 35 / 100; // TODO: update this value
@@ -86,7 +87,7 @@ public class HudRenderMixin extends DrawableHelper
         drawTexture(matrices, x, y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
 
         // Fills the honey slots with honey if the respective level is met
-        int honey = BeenfoClient.lastHiveResponseHoneyLevel; //blockState.get(HONEY_LEVEL);
+        int honey = BeeInfoClient.lastHiveResponseHoneyLevel; //blockState.get(HONEY_LEVEL);
         if (honey >= 1) drawTexture(matrices, x+17, y+16, 84, 17, 6, 7);
         if (honey >= 2) drawTexture(matrices, x+24, y+22, 84, 17, 6, 7);
         if (honey >= 3) drawTexture(matrices, x+31, y+16, 84, 17, 6, 7);
@@ -94,9 +95,9 @@ public class HudRenderMixin extends DrawableHelper
         if (honey >= 5) drawTexture(matrices, x+51, y+16, 83, 34, 14, 13);
 
         // Draws the bees inside the hive based on the count
-        if (BeenfoClient.lastHiveResponseBeeCount >= 1) drawTexture(matrices, x+14, y+37, 83, 2, 13, 12);
-        if (BeenfoClient.lastHiveResponseBeeCount >= 2) drawTexture(matrices, x+34, y+37, 83, 2, 13, 12);
-        if (BeenfoClient.lastHiveResponseBeeCount >= 3) drawTexture(matrices, x+54, y+37, 83, 2, 13, 12);
+        if (BeeInfoClient.lastHiveResponseBeeCount >= 1) drawTexture(matrices, x+14, y+37, 83, 2, 13, 12);
+        if (BeeInfoClient.lastHiveResponseBeeCount >= 2) drawTexture(matrices, x+34, y+37, 83, 2, 13, 12);
+        if (BeeInfoClient.lastHiveResponseBeeCount >= 3) drawTexture(matrices, x+54, y+37, 83, 2, 13, 12);
 
         // Draws the name of the block
         OrderedText orderedText = blockState.getBlock().getName().asOrderedText();

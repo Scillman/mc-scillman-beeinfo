@@ -1,6 +1,5 @@
-package eu.scillman.minecraft.beenfo.mixin;
+package eu.scillman.minecraft.beeinfo.mixin;
 
-import eu.scillman.minecraft.beenfo.BeenfoServer;
 import net.minecraft.block.BeehiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -18,6 +17,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import eu.scillman.minecraft.beeinfo.BeeInfoServer;
+
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
@@ -51,7 +53,7 @@ public class BlockUseMixin
                     tag = bbe.getBees();
                 }
 
-                BeenfoServer.sendBlockInfo(serverPlayer, honey, tag);
+                BeeInfoServer.sendBlockInfo(serverPlayer, honey, tag);
             }
         }
     }

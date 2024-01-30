@@ -1,10 +1,13 @@
-package eu.scillman.minecraft.beenfo;
+package eu.scillman.minecraft.beeinfo;
+
+import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
 
 import org.jetbrains.annotations.Nullable;
 
-import eu.scillman.minecraft.beenfo.gui.InGameMenu;
-import eu.scillman.minecraft.beenfo.network.PacketHUD;
-import eu.scillman.minecraft.beenfo.network.PacketMenu;
+import eu.scillman.minecraft.beeinfo.config.ModSettings;
+import eu.scillman.minecraft.beeinfo.gui.InGameMenu;
+import eu.scillman.minecraft.beeinfo.network.PacketHUD;
+import eu.scillman.minecraft.beeinfo.network.PacketMenu;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
@@ -16,7 +19,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class BeenfoClient implements ClientModInitializer
+public class BeeInfoClient implements ClientModInitializer
 {
     @Nullable
     public static BlockPos lastHiveResponseBlockPos = null;
@@ -36,10 +39,24 @@ public class BeenfoClient implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        HUD_TEXTURE = new Identifier(Beenfo.MOD_ID, "textures/gui/hud.png");
+        HUD_TEXTURE = new Identifier(BeeInfo.MOD_ID, "textures/gui/hud.png");
 
-        ClientPlayNetworking.registerGlobalReceiver(Beenfo.PACKET_ID_MENU, BeenfoClient::onReceiveContainerInfoMenu);
-        ClientPlayNetworking.registerGlobalReceiver(Beenfo.PACKET_ID_HUD, BeenfoClient::onReceiveContainerInfoHud);
+        ClientPlayNetworking.registerGlobalReceiver(BeeInfo.PACKET_ID_MENU, BeeInfoClient::onReceiveContainerInfoMenu);
+        ClientPlayNetworking.registerGlobalReceiver(BeeInfo.PACKET_ID_HUD, BeeInfoClient::onReceiveContainerInfoHud);
+
+        ModSettings settings = ModSettings.getInstance();
+        settings.init(BeeInfo.MOD_ID);
+        settings.load();
+
+        Object obj = settings.get("beeinfo.setting.hud_axis_y");
+        if (obj instanceof Float value)
+        {
+            LOGGER.info("Loaded value = " + value);
+        }
+        else
+        {
+            LOGGER.info("Loaded object = " + obj);
+        }
     }
 
     /**

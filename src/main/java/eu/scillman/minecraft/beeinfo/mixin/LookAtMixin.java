@@ -1,8 +1,5 @@
-package eu.scillman.minecraft.beenfo.mixin;
+package eu.scillman.minecraft.beeinfo.mixin;
 
-import eu.scillman.minecraft.beenfo.Beenfo;
-import eu.scillman.minecraft.beenfo.BeenfoClient;
-import eu.scillman.minecraft.beenfo.network.PacketLookAt;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -14,6 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import eu.scillman.minecraft.beeinfo.BeeInfo;
+import eu.scillman.minecraft.beeinfo.BeeInfoClient;
+import eu.scillman.minecraft.beeinfo.network.PacketLookAt;
+
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -82,7 +84,7 @@ public class LookAtMixin
             // The player does not look at a honey bee container.
             // Instead of sending a request to update the value,
             // reset the local variables instead.
-            BeenfoClient.resetLookAtBlock();
+            BeeInfoClient.resetLookAtBlock();
         }
     }
 
@@ -123,7 +125,7 @@ public class LookAtMixin
         lastUpdateBlockPos = blockPos;
 
         PacketLookAt packet = PacketLookAt.encode(blockPos);
-        ClientPlayNetworking.send(Beenfo.PACKET_ID_LOOKAT, packet);
+        ClientPlayNetworking.send(BeeInfo.PACKET_ID_LOOKAT, packet);
     }
 
     /**
