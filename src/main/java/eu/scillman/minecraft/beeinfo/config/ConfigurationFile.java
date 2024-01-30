@@ -93,6 +93,7 @@ public class ConfigurationFile
             // It should not reach here since the conditions to cause the
             // exception have been cleared by the getFile function.
             assert(false);
+            file = null;
         }
     }
 

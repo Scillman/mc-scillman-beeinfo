@@ -29,8 +29,9 @@ public class ConfigurationItem
         this.callback = callback;
     }
 
-    public void setValue(Object value)
+    public void setValue(Object newValue)
     {
+        Object value = clamp(newValue);
         if (!value.equals(this.value))
         {
             this.value = value;
@@ -70,104 +71,103 @@ public class ConfigurationItem
         return value;
     }
 
-    private Integer clamp(Integer newValue)
+    private Object clamp(Object newValue)
     {
-        if (newValue > ((Integer)(maxValue)))
+        if (defaultValue instanceof Integer)
         {
-            return (Integer)maxValue;
+            return clampInteger(newValue);
         }
-
-        if (newValue < ((Integer)(minValue)))
+        else if (defaultValue instanceof Float)
         {
-            return (Integer)minValue;
+            return clampFloat(newValue);
         }
 
         return newValue;
     }
 
-    private Float clamp(Float newValue)
+    private Object clampInteger(Object obj)
     {
-        if (newValue > ((Float)(maxValue)))
+        Integer newValue;
+
+        if (obj instanceof String strValue)
         {
-            return (Float)maxValue;
+            try
+            {
+                newValue = Integer.valueOf(strValue);
+            }
+            catch (NumberFormatException ex)
+            {
+                return defaultValue;
+            }
+        }
+        else if (obj.getClass() != Integer.class)
+        {
+            return defaultValue;
+        }
+        else
+        {
+            newValue = ((Integer)(obj));
         }
 
-        if (newValue < ((Float)(minValue)))
+        if (minValue instanceof Integer min)
         {
-            return (Float)minValue;
+            if (min > newValue)
+            {
+                return min;
+            }
+        }
+
+        if (maxValue instanceof Integer max)
+        {
+            if (max < newValue)
+            {
+                return max;
+            }
         }
 
         return newValue;
     }
 
-    public ConfigurationItem merge(ConfigurationItem other)
+    private Object clampFloat(Object obj)
     {
-        // There is no value to merge
-        if (other.value == null)
+        Float newValue;
+
+        if (obj instanceof String strValue)
         {
-            return this;
+            try
+            {
+                newValue = Float.valueOf(strValue);
+            }
+            catch (NumberFormatException ex)
+            {
+                return defaultValue;
+            }
+        }
+        else if (obj.getClass() != Float.class)
+        {
+            return defaultValue;
+        }
+        else
+        {
+            newValue = ((Float)(obj));
         }
 
-        // Overwrite the value, but keep values
-        if (defaultValue.getClass() == other.value.getClass())
+        if (minValue instanceof Float min)
         {
-            if (other.value instanceof Integer newValue)
+            if (min > newValue)
             {
-                value = clamp(newValue);
-            }
-            else if (other.value instanceof Float newValue)
-            {
-                value = clamp(newValue);
-            }
-            else
-            {
-                value = other.value;
-            }
-
-            return this;
-        }
-
-        // Type check
-        if (defaultValue.getClass() != other.value.getClass())
-        {
-            if (defaultValue instanceof String)
-            {
-                value = other.value.toString();
-                return this;
-            }
-
-            if (other.value instanceof String strValue)
-            {
-                if (defaultValue instanceof Integer)
-                {
-                    value = clamp(Integer.valueOf(strValue));
-                    return this;
-                }
-
-                if (defaultValue instanceof Float)
-                {
-                    value = clamp(Float.valueOf(strValue));
-                    return this;
-                }
+                return min;
             }
         }
 
-        if (this.value == null)
+        if (maxValue instanceof Float max)
         {
-            this.value = other.value;
-        }
-
-        if (value.getClass() == other.value.getClass())
-        {
-            if (value.getClass() == String.class)
+            if (max < newValue)
             {
-                if (value.getClass() == Integer.class)
-                {
-
-                }
+                return max;
             }
         }
 
-        return this;
+        return newValue;
     }
 }
