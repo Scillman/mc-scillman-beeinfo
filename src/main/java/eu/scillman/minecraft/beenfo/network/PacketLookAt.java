@@ -6,26 +6,26 @@ import net.minecraft.util.math.BlockPos;
 
 /**
  * @brief A packet send from the client to the server.
- * 
+ *
  * A packet send from the client to the server, contains information about the block the player is looking at.
  */
-public class BeenfoPacketLookAt extends PacketByteBuf
+public class PacketLookAt extends PacketByteBuf
 {
     private int version = 1;
 
     public BlockPos blockPos;
 
-    private BeenfoPacketLookAt()
+    private PacketLookAt()
     {
         super(Unpooled.buffer());
     }
 
-    private BeenfoPacketLookAt(PacketByteBuf parent)
+    private PacketLookAt(PacketByteBuf parent)
     {
         super(parent);
     }
 
-    private BeenfoPacketLookAt encode()
+    private PacketLookAt encode()
     {
         writeInt(version);
         writeBlockPos(blockPos);
@@ -33,16 +33,16 @@ public class BeenfoPacketLookAt extends PacketByteBuf
         return this;
     }
 
-    public static BeenfoPacketLookAt encode(BlockPos blockPos)
+    public static PacketLookAt encode(BlockPos blockPos)
     {
-        BeenfoPacketLookAt packet = new BeenfoPacketLookAt();
+        PacketLookAt packet = new PacketLookAt();
 
         packet.blockPos = blockPos;
 
         return packet.encode();
     }
 
-    private BeenfoPacketLookAt decode()
+    private PacketLookAt decode()
     {
         // TODO: check version
         version  = readInt();
@@ -51,9 +51,9 @@ public class BeenfoPacketLookAt extends PacketByteBuf
         return this;
     }
 
-    public static BeenfoPacketLookAt decode(PacketByteBuf buffer)
+    public static PacketLookAt decode(PacketByteBuf buffer)
     {
-        BeenfoPacketLookAt packet = new BeenfoPacketLookAt(buffer);
+        PacketLookAt packet = new PacketLookAt(buffer);
         return packet.decode();
     }
 }

@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 /**
  * @brief Packet send from the server to the client with the beehive/nest HUD information.
  */
-public class BeenfoPacketHUD extends PacketByteBuf
+public class PacketHUD extends PacketByteBuf
 {
     private int version = 1;
 
@@ -15,17 +15,17 @@ public class BeenfoPacketHUD extends PacketByteBuf
     public int beeCount;
     public BlockPos blockPos;
 
-    private BeenfoPacketHUD()
+    private PacketHUD()
     {
         super(Unpooled.buffer());
     }
 
-    private BeenfoPacketHUD(PacketByteBuf parent)
+    private PacketHUD(PacketByteBuf parent)
     {
         super(parent);
     }
 
-    private BeenfoPacketHUD encode()
+    private PacketHUD encode()
     {
         writeInt(version);
         writeInt(honeyLevel);
@@ -35,9 +35,9 @@ public class BeenfoPacketHUD extends PacketByteBuf
         return this;
     }
 
-    public static BeenfoPacketHUD encode(int honeyLevel, int beeCount, BlockPos blockPos)
+    public static PacketHUD encode(int honeyLevel, int beeCount, BlockPos blockPos)
     {
-        BeenfoPacketHUD packet = new BeenfoPacketHUD();
+        PacketHUD packet = new PacketHUD();
 
         packet.honeyLevel = honeyLevel;
         packet.beeCount = beeCount;
@@ -46,7 +46,7 @@ public class BeenfoPacketHUD extends PacketByteBuf
         return packet.encode();
     }
 
-    private BeenfoPacketHUD decode()
+    private PacketHUD decode()
     {
         // TODO: check version
         version     = readInt();
@@ -57,9 +57,9 @@ public class BeenfoPacketHUD extends PacketByteBuf
         return this;
     }
 
-    public static BeenfoPacketHUD decode(PacketByteBuf buffer)
+    public static PacketHUD decode(PacketByteBuf buffer)
     {
-        BeenfoPacketHUD packet = new BeenfoPacketHUD(buffer);
+        PacketHUD packet = new PacketHUD(buffer);
         return packet.decode();
     }
 }

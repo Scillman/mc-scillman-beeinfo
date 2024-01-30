@@ -2,8 +2,9 @@ package eu.scillman.minecraft.beenfo;
 
 import org.jetbrains.annotations.Nullable;
 
-import eu.scillman.minecraft.beenfo.network.BeenfoPacketHUD;
-import eu.scillman.minecraft.beenfo.network.BeenfoPacketMenu;
+import eu.scillman.minecraft.beenfo.gui.InGameMenu;
+import eu.scillman.minecraft.beenfo.network.PacketHUD;
+import eu.scillman.minecraft.beenfo.network.PacketMenu;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
@@ -51,9 +52,9 @@ public class BeenfoClient implements ClientModInitializer
     @Environment(EnvType.CLIENT)
     private static void onReceiveContainerInfoMenu(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender responseSender)
     {
-        BeenfoPacketMenu packet = BeenfoPacketMenu.decode(buffer);
+        PacketMenu packet = PacketMenu.decode(buffer);
         client.execute(() -> {
-            client.setScreen(new BeenfoScreen(packet.honeyLevel, packet.beeNames));
+            client.setScreen(new InGameMenu(packet.honeyLevel, packet.beeNames));
         });
     }
 
@@ -67,7 +68,7 @@ public class BeenfoClient implements ClientModInitializer
     @Environment(EnvType.CLIENT)
     private static void onReceiveContainerInfoHud(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender responseSender)
     {
-        BeenfoPacketHUD packet = BeenfoPacketHUD.decode(buffer);
+        PacketHUD packet = PacketHUD.decode(buffer);
 
         lastHiveResponseHoneyLevel = packet.honeyLevel;
         lastHiveResponseBeeCount = packet.beeCount;

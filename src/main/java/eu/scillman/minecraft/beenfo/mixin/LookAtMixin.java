@@ -2,7 +2,7 @@ package eu.scillman.minecraft.beenfo.mixin;
 
 import eu.scillman.minecraft.beenfo.Beenfo;
 import eu.scillman.minecraft.beenfo.BeenfoClient;
-import eu.scillman.minecraft.beenfo.network.BeenfoPacketLookAt;
+import eu.scillman.minecraft.beenfo.network.PacketLookAt;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -122,7 +122,7 @@ public class LookAtMixin
         lastUpdateTime = System.currentTimeMillis();
         lastUpdateBlockPos = blockPos;
 
-        BeenfoPacketLookAt packet = BeenfoPacketLookAt.encode(blockPos);
+        PacketLookAt packet = PacketLookAt.encode(blockPos);
         ClientPlayNetworking.send(Beenfo.PACKET_ID_LOOKAT, packet);
     }
 

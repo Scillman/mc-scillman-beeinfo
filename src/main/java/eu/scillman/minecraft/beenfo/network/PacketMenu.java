@@ -8,7 +8,7 @@ import net.minecraft.network.PacketByteBuf;
 /**
  * @brief Packet send from the server to the client with the beehive/nest menu information.
  */
-public class BeenfoPacketMenu extends PacketByteBuf
+public class PacketMenu extends PacketByteBuf
 {
     private int version = 1;
 
@@ -16,17 +16,17 @@ public class BeenfoPacketMenu extends PacketByteBuf
     public int beeCount;
     public List<String> beeNames;
 
-    public BeenfoPacketMenu()
+    public PacketMenu()
     {
         super(Unpooled.buffer());
     }
 
-    BeenfoPacketMenu(PacketByteBuf parent)
+    PacketMenu(PacketByteBuf parent)
     {
         super(parent);
     }
 
-    public BeenfoPacketMenu encode()
+    public PacketMenu encode()
     {
         writeInt(version);
         writeInt(honeyLevel);
@@ -40,9 +40,9 @@ public class BeenfoPacketMenu extends PacketByteBuf
         return this;
     }
 
-    public static BeenfoPacketMenu encode(int honeyLevel, List<String> beeNames)
+    public static PacketMenu encode(int honeyLevel, List<String> beeNames)
     {
-        BeenfoPacketMenu packet = new BeenfoPacketMenu();
+        PacketMenu packet = new PacketMenu();
 
         packet.honeyLevel = honeyLevel;
         packet.beeNames = beeNames;
@@ -51,7 +51,7 @@ public class BeenfoPacketMenu extends PacketByteBuf
         return packet.encode();
     }
 
-    private BeenfoPacketMenu decode()
+    private PacketMenu decode()
     {
         // TODO: check version
         version     = readInt();
@@ -67,9 +67,9 @@ public class BeenfoPacketMenu extends PacketByteBuf
         return this;
     }
 
-    public static BeenfoPacketMenu decode(PacketByteBuf buffer)
+    public static PacketMenu decode(PacketByteBuf buffer)
     {
-        BeenfoPacketMenu packet = new BeenfoPacketMenu(buffer);
+        PacketMenu packet = new PacketMenu(buffer);
         return packet.decode();
     }
 }

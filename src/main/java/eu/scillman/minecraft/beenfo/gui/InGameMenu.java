@@ -1,4 +1,4 @@
-package eu.scillman.minecraft.beenfo;
+package eu.scillman.minecraft.beenfo.gui;
 
 import java.util.List;
 
@@ -13,10 +13,12 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import eu.scillman.minecraft.beenfo.Beenfo;
+
 /**
  * @brief The screen used for rendering the menu.
  */
-public class BeenfoScreen extends Screen
+public class InGameMenu extends Screen
 {
     private static final Identifier MENU_TEXTURE = new Identifier(Beenfo.MOD_ID, "textures/gui/menu.png");
 
@@ -26,7 +28,7 @@ public class BeenfoScreen extends Screen
     private int x;
     private int y;
 
-    BeenfoScreen(int honeyLevel, List<String> beeNames)
+    public InGameMenu(int honeyLevel, List<String> beeNames)
     {
         super(Text.translatable("beenfo.screen.title"));
 

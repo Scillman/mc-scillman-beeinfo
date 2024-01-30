@@ -22,6 +22,9 @@
         ],
         "client": [
             "eu.scillman.minecraft.beenfo.BeenfoClient"
+        ],
+        "modmenu": [
+            "eu.scillman.minecraft.beenfo.gui.OptionsMenu"
         ]
     },
     "mixins": [
@@ -33,7 +36,13 @@
         "java": ">=17",
         "fabric-api": ">=0.68.1"
     },
-    "suggests": {
+    "recommends": {
         "modmenu": ">=5.1.0"
+    },
+    "custom": {
+        "modmenu": {
+            "badges": [],
+            "update_checker": false
+        }
     }
 }

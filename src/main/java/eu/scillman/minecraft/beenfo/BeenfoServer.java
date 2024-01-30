@@ -4,9 +4,9 @@ import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 
 import org.jetbrains.annotations.Nullable;
 
-import eu.scillman.minecraft.beenfo.network.BeenfoPacketHUD;
-import eu.scillman.minecraft.beenfo.network.BeenfoPacketLookAt;
-import eu.scillman.minecraft.beenfo.network.BeenfoPacketMenu;
+import eu.scillman.minecraft.beenfo.network.PacketHUD;
+import eu.scillman.minecraft.beenfo.network.PacketLookAt;
+import eu.scillman.minecraft.beenfo.network.PacketMenu;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -76,7 +76,7 @@ public class BeenfoServer implements ModInitializer
     public static void sendBlockInfo(ServerPlayerEntity player, int honeyLevel, @Nullable NbtList bees)
     {
         ArrayList<String> beeNames = getBeeNameList(bees);
-        BeenfoPacketMenu packet = BeenfoPacketMenu.encode(honeyLevel, beeNames);
+        PacketMenu packet = PacketMenu.encode(honeyLevel, beeNames);
         ServerPlayNetworking.send(player, Beenfo.PACKET_ID_MENU, packet);
     }
 
@@ -90,7 +90,7 @@ public class BeenfoServer implements ModInitializer
      */
     private static void onLookAtPacketReceived(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf attachedData, PacketSender responseSender)
     {
-        BeenfoPacketLookAt packet = BeenfoPacketLookAt.decode(attachedData);
+        PacketLookAt packet = PacketLookAt.decode(attachedData);
         server.execute(() -> {
             sendHudContentToClient(player, packet.blockPos, responseSender);
         });
@@ -115,7 +115,7 @@ public class BeenfoServer implements ModInitializer
         int honey = blockState.get(HONEY_LEVEL);
         int beeCount = getBeeCount(world, blockPos);
 
-        BeenfoPacketHUD packet = BeenfoPacketHUD.encode(honey, beeCount, blockPos);
+        PacketHUD packet = PacketHUD.encode(honey, beeCount, blockPos);
         responseSender.sendPacket(Beenfo.PACKET_ID_HUD, packet);
     }
 
