@@ -9,5 +9,10 @@
     "beeinfo.config.tt.showpopup"   : "Show a popup when you're looking at a hive or nest",
     "beeinfo.config.tt.popupxpercent": "Select the popup position on the screen",
     "beeinfo.config.tt.popupypercent": "Select the popup position on the screen",
-    "beeinfo.screen.title": "title (deprecated?)"
+    "beeinfo.screen.title": "title (deprecated?)",
+
+    "beeinfo.setting.enable_menu": "Enable Menu",
+    "beeinfo.setting.enable_hud": "Enable HUD",
+    "beeinfo.setting.hud_axis_x": "HUD X-offset",
+    "beeinfo.setting.hud_axis_y": "HUD Y-offset"
 }

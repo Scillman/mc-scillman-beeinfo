@@ -3,6 +3,8 @@ package eu.scillman.minecraft.beeinfo.config;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
+import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
+
 public class ConfigurationItem
 {
     private String key;
@@ -32,6 +34,8 @@ public class ConfigurationItem
     public void setValue(Object newValue)
     {
         Object value = clamp(newValue);
+        LOGGER.info("Transormed? \"" + newValue + "\" to \"" + value + "\"");
+
         if (!value.equals(this.value))
         {
             this.value = value;
@@ -73,13 +77,14 @@ public class ConfigurationItem
 
     private Object clamp(Object newValue)
     {
+        if (defaultValue instanceof Float)
+        {
+            return clampFloat(newValue);
+        }
+
         if (defaultValue instanceof Integer)
         {
             return clampInteger(newValue);
-        }
-        else if (defaultValue instanceof Float)
-        {
-            return clampFloat(newValue);
         }
 
         return newValue;
@@ -99,6 +104,11 @@ public class ConfigurationItem
             {
                 return defaultValue;
             }
+        }
+        else if (obj.getClass() == Long.class)
+        {
+            Long lv = ((Long)(obj));
+            newValue = lv.intValue();
         }
         else if (obj.getClass() != Integer.class)
         {
@@ -143,8 +153,19 @@ public class ConfigurationItem
                 return defaultValue;
             }
         }
+        else if (obj.getClass() == Number.class)
+        {
+            Number nv = ((Number)(obj));
+            newValue = nv.floatValue();
+        }
+        else if (obj.getClass() == Double.class)
+        {
+            Double dv = ((Double)(obj));
+            newValue = dv.floatValue();
+        }
         else if (obj.getClass() != Float.class)
         {
+            LOGGER.info("notFloat (CLASS="+obj.getClass()+"\")");
             return defaultValue;
         }
         else

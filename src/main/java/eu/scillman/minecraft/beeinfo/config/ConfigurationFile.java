@@ -79,7 +79,12 @@ public class ConfigurationFile
             data.forEach((key, value) -> {
                 if (items.containsKey(key))
                 {
+                    LOGGER.info("Overwriting setting of \"" + key + "\" to value of: " + value);
                     items.get(key).setValue(value);
+                }
+                else
+                {
+                    LOGGER.warn("Does not contain key => \"" + key + "\"");
                 }
             });
         }

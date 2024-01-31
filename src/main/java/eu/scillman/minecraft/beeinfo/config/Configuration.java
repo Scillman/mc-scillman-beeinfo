@@ -65,6 +65,20 @@ public class Configuration extends ConfigurationFile
         }));
     }
 
+    @SuppressWarnings("unchecked")
+    public <T extends Object> @Nullable T max(String key)
+    {
+        assert(items.containsKey(key));
+        return ((T)(items.get(key).max()));
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Object> @Nullable T min(String key)
+    {
+        assert(items.containsKey(key));
+        return ((T)(items.get(key).min()));
+    }
+
     /**
      * @brief Get the value of the key.
      * @param <T> The type of the returned value.

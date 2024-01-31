@@ -1,7 +1,7 @@
 package eu.scillman.minecraft.beeinfo.gui;
 
 import net.fabricmc.api.Environment;
-import eu.scillman.minecraft.beeinfo.BeeInfo;
+import eu.scillman.minecraft.beeinfo.config.ModSettings;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -9,16 +9,34 @@ import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
-@Environment(EnvType.CLIENT)
+import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_MENU;
+import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_HUD;
+import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_X;
+import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_Y;
+// import static eu.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_ENABLE_MENU;
+// import static eu.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_ENABLE_HUD;
+// import static eu.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_HUD_AXIS_X;
+// import static eu.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_HUD_AXIS_Y;
+
+@Environment(value=EnvType.CLIENT)
 public class OptionsScreen extends Screen
 {
     private ButtonWidget buttonDone;
-    private CyclingButtonWidget<Boolean> buttonToggleHUD;
     private CyclingButtonWidget<Boolean> buttonToggleMenu;
+    private CyclingButtonWidget<Boolean> buttonToggleHud;
+    private PercentageSliderWidget sliderHudAxisX;
+    private PercentageSliderWidget sliderHudAxisY;
 
     public OptionsScreen(Text title)
     {
         super(title);
+    }
+
+    @Override
+    public void close()
+    {
+        ModSettings.save();
+        super.close();
     }
 
     private void onPressedButtonDone(ButtonWidget sender)
@@ -27,30 +45,89 @@ public class OptionsScreen extends Screen
         close();
     }
 
-    private void onToggleHUD(CyclingButtonWidget<Boolean> sender, Boolean value)
-    {
-        assert(sender == buttonToggleHUD);
-        BeeInfo.LOGGER.info("Enable HUD = " + value);
-    }
-
     private void onToggleMenu(CyclingButtonWidget<Boolean> sender, Boolean value)
     {
         assert(sender == buttonToggleMenu);
-        BeeInfo.LOGGER.info("Enable Menu = " + value);
+        ModSettings.setEnableMenu(value);
+    }
+
+    private void onToggleHud(CyclingButtonWidget<Boolean> sender, Boolean value)
+    {
+        assert(sender == buttonToggleHud);
+        ModSettings.setEnableHud(value);
+    }
+
+    private void onHudAxisXChanged(PercentageSliderWidget sender, double value)
+    {
+        assert(sender == sliderHudAxisX);
+        float max = ModSettings.getHudAxisXMax();
+        float min = ModSettings.getHudAxisXMin();
+        float newValue = (((max - min) * (float)value) + min);
+        ModSettings.setHudAxisX(newValue);
+    }
+
+    private void onHudAxisYChanged(PercentageSliderWidget sender, double value)
+    {
+        assert(sender == sliderHudAxisY);
+        float max = ModSettings.getHudAxisYMax();
+        float min = ModSettings.getHudAxisYMin();
+        float newValue = (((max - min) * (float)value) + min);
+        ModSettings.setHudAxisY(newValue);
     }
 
     @Override
     protected void init()
     {
         final int SPACING = 5;
+        final int ITEM_WIDTH = (width/3);
+        final int ITEM_HEIGHT = 20;
+        final int ITEM_X_LEFT = ((width/6)-SPACING);
+        final int ITEM_X_RIGHT = ((width/2)+SPACING);
+        int nextY = 35; // 20+15 = title, see {@link #render}
 
-        buttonToggleHUD = createToggleButton((width/6)-SPACING, 35, (width/3), 20, Text.literal("Enable HUD"), this::onToggleHUD);
-        buttonToggleMenu = createToggleButton((width/2)+SPACING, 35, (width/3), 20, Text.literal("Enable In-Game Menu"), this::onToggleMenu);
+        buttonToggleMenu = createToggleButton(
+            ITEM_X_LEFT, nextY,
+            ITEM_WIDTH, ITEM_HEIGHT,
+            KEY_SETTING_ENABLE_MENU,
+            this::onToggleMenu
+        );
+        buttonToggleHud = createToggleButton(
+            ITEM_X_RIGHT, nextY,
+            ITEM_WIDTH, ITEM_HEIGHT,
+            KEY_SETTING_ENABLE_HUD,
+            this::onToggleHud
+        );
 
-        buttonDone = createButton((width/4), (35+20+SPACING), (width/2), 20, Text.literal("Done"), this::onPressedButtonDone);
+        nextY += ITEM_HEIGHT + SPACING;
 
-        addDrawableChild(buttonToggleHUD);
+        sliderHudAxisX = createSlider(
+            ITEM_X_LEFT, nextY,
+            ITEM_WIDTH, ITEM_HEIGHT,
+            KEY_SETTING_HUD_AXIS_X,
+            ModSettings.getHudAxisX(),
+            this::onHudAxisXChanged
+        );
+        sliderHudAxisY = createSlider(
+            ITEM_X_RIGHT, nextY,
+            ITEM_WIDTH, ITEM_HEIGHT,
+            KEY_SETTING_HUD_AXIS_Y,
+            ModSettings.getHudAxisY(),
+            this::onHudAxisYChanged
+        );
+
+        nextY += ITEM_HEIGHT + SPACING;
+
+        buttonDone = createButton(
+            (width/4), nextY,
+            (width/2), ITEM_HEIGHT,
+            "Done",
+            this::onPressedButtonDone
+        );
+
         addDrawableChild(buttonToggleMenu);
+        addDrawableChild(buttonToggleHud);
+        addDrawableChild(sliderHudAxisX);
+        addDrawableChild(sliderHudAxisY);
         addDrawableChild(buttonDone);
     }
 
@@ -60,26 +137,27 @@ public class OptionsScreen extends Screen
         assert(client != null);
 
         renderBackground(matrices);
-
-        drawCenteredText(
-            matrices,       // MatrixStack
-            textRenderer,   // TextRenderer
-            title,          // Text
-            (width / 2),    // centerX
-            20,             // y
-            0xffffff        // color
+        drawCenteredText(matrices,
+            textRenderer, title,
+            (width / 2), 20,
+            0xffffff
         );
 
         super.render(matrices, mouseX, mouseY, delta);
     }
 
-    private static ButtonWidget createButton(int x, int y, int width, int height, Text text, ButtonWidget.PressAction pressAction)
+    private static ButtonWidget createButton(int x, int y, int width, int height, String text, ButtonWidget.PressAction pressAction)
     {
-        return ButtonWidget.builder(text, pressAction).dimensions(x, y, width, height).build();
+        return ButtonWidget.builder(Text.translatable(text), pressAction).dimensions(x, y, width, height).build();
     }
 
-    private static CyclingButtonWidget<Boolean> createToggleButton(int x, int y, int width, int height, Text text, CyclingButtonWidget.UpdateCallback<Boolean> callback)
+    private static CyclingButtonWidget<Boolean> createToggleButton(int x, int y, int width, int height, String text, CyclingButtonWidget.UpdateCallback<Boolean> callback)
     {
-        return CyclingButtonWidget.onOffBuilder().build(x, y, width, height, text, callback);
+        return CyclingButtonWidget.onOffBuilder().build(x, y, width, height, Text.translatable(text), callback);
+    }
+
+    private static PercentageSliderWidget createSlider(int x, int y, int width, int height, String text, double value, PercentageSliderWidget.UpdateCallback callback)
+    {
+        return new PercentageSliderWidget(x, y, width, height, Text.translatable(text), value, callback);
     }
 }

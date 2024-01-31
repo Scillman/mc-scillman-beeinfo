@@ -7,6 +7,7 @@ import net.minecraft.util.Identifier;
 public final class BeeInfo
 {
     public static final String MOD_ID = "beeinfo";
+    public static final String MOD_NAME = "BeeInfo";
 
     public static final int NBT_TYPE_INT        = 0x03; // net.minecraft.nbt.NbtInt.getType()
     public static final int NBT_TYPE_LONG       = 0x04; // net.minecraft.nbt.NbtLong.getType()
@@ -20,5 +21,15 @@ public final class BeeInfo
     public static final Identifier PACKET_ID_MENU   = new Identifier(MOD_ID, "server/menu");
     public static final Identifier PACKET_ID_HUD    = new Identifier(MOD_ID, "server/hud");
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
+
+    public static final String KEY_SETTING_ENABLE_MENU = (MOD_ID + ".setting.enable_menu");
+    public static final String KEY_SETTING_ENABLE_HUD  = (MOD_ID + ".setting.enable_hud");
+    public static final String KEY_SETTING_HUD_AXIS_X  = (MOD_ID + ".setting.hud_axis_x");
+    public static final String KEY_SETTING_HUD_AXIS_Y  = (MOD_ID + ".setting.hud_axis_y");
+
+    public static final String HINT_SETTING_ENABLE_MENU  = (MOD_ID + ".hint.enable_menu");
+    public static final String HINT_SETTING_ENABLE_HUD   = (MOD_ID + ".hint.enable_hud");
+    public static final String HINT_SETTING_HUD_AXIS_X   = (MOD_ID + ".hint.hud_axis_x");
+    public static final String HINT_SETTING_HUD_AXIS_Y   = (MOD_ID + ".hint.hud_axis_y");
 }

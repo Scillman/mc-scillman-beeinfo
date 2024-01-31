@@ -1,32 +1,120 @@
 package eu.scillman.minecraft.beeinfo.config;
 
-public class ModSettings extends Configuration
+import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_MENU;
+import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_HUD;
+import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_X;
+import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_Y;
+
+public class ModSettings
 {
-    private static ModSettings instance;
+    private static ModSettingsHandler handler;
 
     private ModSettings()
     {
-
+        super();
     }
 
-    public static ModSettings getInstance()
+    private static ModSettingsHandler getHandler()
     {
-        if (instance == null)
+        if (handler == null)
         {
-            instance = new ModSettings();
+            handler = new ModSettingsHandler();
         }
-
-        return instance;
+        return handler;
     }
 
-    @Override
-    public void init(String modId)
+    public static void init(String modId)
     {
-        super.init(modId);
+        getHandler().init(modId);
+    }
 
-        register("beeinfo.setting.enable_hud",  "beeinfo.hint.enable_hud",  null, false);
-        register("beeinfo.setting.enable_menu", "beeinfo.hint.enable_menu", null, true);
-        register("beeinfo.setting.hud_axis_x",  "beeinfo.hint.hud_axis_x",  null, 0.5f, 0.0f, 1.0f);
-        register("beeinfo.setting.hud_axis_y",  "beeinfo.hint.hud_axis_y",  null, 0.5f, 0.0f, 1.0f);
+    public static void load()
+    {
+        getHandler().load();
+    }
+
+    public static void save()
+    {
+        getHandler().save();
+    }
+
+    public static Boolean getEnableMenu()
+    {
+        return getHandler().get(KEY_SETTING_ENABLE_MENU);
+    }
+
+    public static void setEnableMenu(Boolean enable)
+    {
+        getHandler().set(KEY_SETTING_ENABLE_MENU, enable);
+    }
+
+    public static void resetEnableMenu()
+    {
+        getHandler().reset(KEY_SETTING_ENABLE_MENU);
+    }
+
+    public static Boolean getEnableHud()
+    {
+        return getHandler().get(KEY_SETTING_ENABLE_HUD);
+    }
+
+    public static void setEnableHud(Boolean enable)
+    {
+        getHandler().set(KEY_SETTING_ENABLE_HUD, enable);
+    }
+
+    public static void resetEnableHud()
+    {
+        getHandler().reset(KEY_SETTING_ENABLE_HUD);
+    }
+
+    public static Float getHudAxisXMax()
+    {
+        return getHandler().max(KEY_SETTING_HUD_AXIS_X);
+    }
+
+    public static Float getHudAxisXMin()
+    {
+        return getHandler().min(KEY_SETTING_HUD_AXIS_X);
+    }
+
+    public static Float getHudAxisX()
+    {
+        return getHandler().get(KEY_SETTING_HUD_AXIS_X);
+    }
+
+    public static void setHudAxisX(Float value)
+    {
+        getHandler().set(KEY_SETTING_HUD_AXIS_X, value);
+    }
+
+    public static void resetHudAxisX()
+    {
+        getHandler().reset(KEY_SETTING_HUD_AXIS_X);
+    }
+
+    public static Float getHudAxisYMax()
+    {
+        return getHandler().max(KEY_SETTING_HUD_AXIS_Y);
+    }
+
+    public static Float getHudAxisYMin()
+    {
+        return getHandler().min(KEY_SETTING_HUD_AXIS_Y);
+    }
+
+    public static Float getHudAxisY()
+    {
+        return getHandler().get(KEY_SETTING_HUD_AXIS_Y);
+    }
+
+    public static void setHudAxisY(Float value)
+    {
+        getHandler().set(KEY_SETTING_HUD_AXIS_Y, value);
+    }
+
+    public static void resetHudAxisY()
+    {
+        getHandler().reset(KEY_SETTING_HUD_AXIS_Y);
     }
 }

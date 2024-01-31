@@ -4,6 +4,9 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 import eu.scillman.minecraft.beeinfo.BeeInfo;
 import java.util.ArrayList;
+
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvType;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Items;
@@ -15,6 +18,7 @@ import org.lwjgl.glfw.GLFW;
 /**
  * @brief The screen used for rendering the menu.
  */
+@Environment(value=EnvType.CLIENT)
 public class InGameMenu extends Screen
 {
     private static final Identifier MENU_TEXTURE = new Identifier(BeeInfo.MOD_ID, "textures/gui/menu.png");

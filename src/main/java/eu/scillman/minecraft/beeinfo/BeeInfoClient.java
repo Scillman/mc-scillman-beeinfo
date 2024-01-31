@@ -1,7 +1,5 @@
 package eu.scillman.minecraft.beeinfo;
 
-import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
-
 import org.jetbrains.annotations.Nullable;
 
 import eu.scillman.minecraft.beeinfo.config.ModSettings;
@@ -44,19 +42,8 @@ public class BeeInfoClient implements ClientModInitializer
         ClientPlayNetworking.registerGlobalReceiver(BeeInfo.PACKET_ID_MENU, BeeInfoClient::onReceiveContainerInfoMenu);
         ClientPlayNetworking.registerGlobalReceiver(BeeInfo.PACKET_ID_HUD, BeeInfoClient::onReceiveContainerInfoHud);
 
-        ModSettings settings = ModSettings.getInstance();
-        settings.init(BeeInfo.MOD_ID);
-        settings.load();
-
-        Object obj = settings.get("beeinfo.setting.hud_axis_y");
-        if (obj instanceof Float value)
-        {
-            LOGGER.info("Loaded value = " + value);
-        }
-        else
-        {
-            LOGGER.info("Loaded object = " + obj);
-        }
+        ModSettings.init(BeeInfo.MOD_ID);
+        ModSettings.load();
     }
 
     /**

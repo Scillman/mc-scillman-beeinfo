@@ -3,6 +3,7 @@ package eu.scillman.minecraft.beeinfo.mixin;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import eu.scillman.minecraft.beeinfo.BeeInfoClient;
+import eu.scillman.minecraft.beeinfo.config.ModSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -34,6 +35,11 @@ public class HudRenderMixin extends DrawableHelper
     @Inject(method="renderStatusEffectOverlay", at=@At("RETURN"))
     private void onRenderStatusEffectsOverlay(MatrixStack matrices, CallbackInfo ci)
     {
+        if (!ModSettings.getEnableHud())
+        {
+            return;
+        }
+
         if (client == null || client.player == null || client.world == null)
         {
             return;
@@ -78,12 +84,26 @@ public class HudRenderMixin extends DrawableHelper
         final int HUD_WIDTH = 82;
         final int HUD_HEIGHT = 59;
 
+        // Dimensions of the render area
+        int w = client.getWindow().getScaledWidth();
+        int h = client.getWindow().getScaledHeight();
+
+        // The width and height available to render the HUD
+        int aw = (w - HUD_WIDTH);
+        int ah = (h - HUD_HEIGHT);
+
+        // Offset on both axis
+        int ox = (int) (aw * ModSettings.getHudAxisX());
+        int oy = (int) (ah * ModSettings.getHudAxisY());
+
+        // Actual HUD render position
+        int x = (ox + (HUD_WIDTH / 2));
+        int y = (oy + (HUD_HEIGHT / 2));
+
         // The texture to use for rendering.
         RenderSystem.setShaderTexture(0, BeeInfoClient.HUD_TEXTURE);
 
         // Draw the background texture
-        int x = (client.getWindow().getScaledWidth() - HUD_WIDTH) * 35 / 100; // TODO: update this value
-        int y = (client.getWindow().getScaledHeight() - HUD_HEIGHT) * 35 / 100; // TODO: update this value
         drawTexture(matrices, x, y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
 
         // Fills the honey slots with honey if the respective level is met
