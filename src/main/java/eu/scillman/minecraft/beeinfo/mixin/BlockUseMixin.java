@@ -1,7 +1,7 @@
 package eu.scillman.minecraft.beeinfo.mixin;
 
 import eu.scillman.minecraft.beeinfo.BeeInfoServer;
-import eu.scillman.minecraft.beeinfo.config.ModSettings;
+// import eu.scillman.minecraft.beeinfo.config.ModSettings;
 import net.minecraft.block.BeehiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -37,9 +37,9 @@ public class BlockUseMixin
      * @remarks Gets called before the return statement of the BeehiveBlock.onUse function.
      */
     @Inject(method="onUse", at=@At(value="RETURN", ordinal=1))
-    public void onUseStick(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<?> ci)
+    public void onUseHoneyBeeContainer(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<?> ci)
     {
-        if (!ModSettings.getEnableMenu())
+        if (world.isClient())
         {
             return;
         }
@@ -57,7 +57,7 @@ public class BlockUseMixin
                     tag = bbe.getBees();
                 }
 
-                BeeInfoServer.sendBlockInfo(serverPlayer, honey, tag);
+                BeeInfoServer.sendBlockInfoToClient(serverPlayer, honey, tag);
             }
         }
     }

@@ -1,8 +1,11 @@
 package eu.scillman.minecraft.beeinfo.config;
 
 import java.util.function.Consumer;
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvType;
 import org.jetbrains.annotations.Nullable;
 
+@Environment(value=EnvType.CLIENT)
 public class ConfigurationItem
 {
     private String key;

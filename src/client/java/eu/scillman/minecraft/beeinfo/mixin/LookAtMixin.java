@@ -5,9 +5,14 @@ import eu.scillman.minecraft.beeinfo.BeeInfoClient;
 import eu.scillman.minecraft.beeinfo.network.PacketLookAt;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BeehiveBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
+import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
 
 @Mixin(MinecraftClient.class)
 public class LookAtMixin
@@ -44,6 +50,12 @@ public class LookAtMixin
     @Nullable
     public ClientWorld world;
 
+    @Shadow
+    private boolean integratedServerRunning;
+
+    @Shadow
+    private int itemUseCooldown;
+
     /**
      * @brief The last time a notification has been send to the server.
      * @remarks Local machine time in ms when last send.
@@ -55,6 +67,85 @@ public class LookAtMixin
      */
     @Nullable
     private BlockPos lastUpdateBlockPos = null;
+
+    private long nextOutTime = 0;
+
+    // /**
+    //  * @brief Called when the player tries to use an item.
+    //  */
+    // @Inject(method="doItemUse", at=@At("RETURN"))
+    // public void onDoItemUse(CallbackInfo ci)
+    // {
+    //     if (crosshairTarget == null || player == null || world == null)
+    //     {
+    //         return;
+    //     }
+
+    //     if (crosshairTarget.getType() != HitResult.Type.BLOCK)
+    //     {
+    //         return;
+    //     }
+
+    //     // These items interact with a Beehive block, so when they
+    //     // are used the player has other intentions. However if
+    //     // other blocks or items are held they may wish to look
+    //     // into the block contents.
+    //     ItemStack itemStack = player.getMainHandStack();
+    //     //if (itemStack.isOf(Items.SHEARS) ||
+    //     //    itemStack.isOf(Items.GLASS_BOTTLE))
+    //     if (itemStack.isEmpty())
+    //     {
+    //         return;
+    //     }
+
+    //     long now = System.currentTimeMillis();
+    //     if (now >= nextOutTime)
+    //     {
+    //         nextOutTime = (now + 1000);
+
+    //         if (world.isClient())
+    //             LOGGER.info("MinecraftClient.world.isClient() == true");
+    //         else
+    //             LOGGER.info("MinecraftClient.world.isClient() == false");
+    //     }
+    // }
+
+    // /**
+    //  */
+    // @Inject(method="tick", at=@At("RETURN"))
+    // private void onTick(CallbackInfo ci)
+    // {
+    //     //LOGGER.info("onTick");
+    //     if (crosshairTarget == null || player == null || world == null)
+    //     {
+    //         return;
+    //     }
+
+    //     if (world.isClient())
+    //         LOGGER.info("MinecraftClient.world.isClient() == true");
+    //     else
+    //         LOGGER.info("MinecraftClient.world.isClient() == false");
+
+    //     if (crosshairTarget.getType() == HitResult.Type.BLOCK)
+    //     {
+    //         BlockHitResult targetBlock = ((BlockHitResult)(crosshairTarget));
+    //         BlockPos blockPos = targetBlock.getBlockPos();
+
+    //         BlockState blockState = world.getBlockState(blockPos);
+    //         if (blockState.contains(HONEY_LEVEL))
+    //             LOGGER.info("honey_level=" + blockState.get(HONEY_LEVEL));
+    //         else
+    //             LOGGER.info("no honey_level");
+
+    //         BlockEntity blockEntity = world.getBlockEntity(blockPos);
+    //         if (blockEntity instanceof BeehiveBlockEntity bbe)
+    //         {
+    //             LOGGER.info("bees");
+    //         }
+    //         else
+    //             LOGGER.info("Not a Beehive/nest");
+    //     }
+    // }
 
     /**
      * @brief Called when the render has ended.
@@ -141,5 +232,4 @@ public class LookAtMixin
 
         return !blockPos.equals(lastUpdateBlockPos);
     }
-
 }

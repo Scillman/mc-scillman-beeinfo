@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
 
 @Mixin(ItemStack.class)
 public abstract class TooltipMixin
@@ -52,6 +53,12 @@ public abstract class TooltipMixin
     @Inject(method="getTooltip", at=@At("RETURN"), locals=LocalCapture.CAPTURE_FAILHARD)
     private void onGetTooltip(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<?> ci, List<Text> list)
     {
+        if (player == null)
+        {
+            return;
+        }
+        assert(player.world.isClient());
+
         // Must be a block capable of containing honey
         if (!isHoneyBeeContainer())
         {
@@ -75,12 +82,7 @@ public abstract class TooltipMixin
         for (int i = 0; i < beeCount; i++)
         {
             nbt = bees.getCompound(i).getCompound("EntityData");
-
-            //ASSERT(nbt != null);
-            if (nbt == null)
-            {
-                continue;
-            }
+            assert(nbt != null);
 
             if (nbt.contains("CustomName", BeeInfo.NBT_TYPE_STRING))
             {

@@ -70,7 +70,7 @@ public class BeeInfoServer implements ModInitializer
      * @param honeyLevel
      * @param bees
      */
-    public static void sendBlockInfo(ServerPlayerEntity player, int honeyLevel, @Nullable NbtList bees)
+    public static void sendBlockInfoToClient(ServerPlayerEntity player, int honeyLevel, @Nullable NbtList bees)
     {
         ArrayList<String> beeNames = getBeeNameList(bees);
         PacketMenu packet = PacketMenu.encode(honeyLevel, beeNames);
@@ -89,7 +89,7 @@ public class BeeInfoServer implements ModInitializer
     {
         PacketLookAt packet = PacketLookAt.decode(attachedData);
         server.execute(() -> {
-            sendHudContentToClient(player, packet.blockPos, responseSender);
+            sendHudInfoToClient(player, packet.blockPos, responseSender);
         });
     }
 
@@ -99,7 +99,7 @@ public class BeeInfoServer implements ModInitializer
      * @param blockPos The position of the block.
      * @param responseSender The socket to send the response to.
      */
-    private static void sendHudContentToClient(ServerPlayerEntity player, BlockPos blockPos, PacketSender responseSender)
+    private static void sendHudInfoToClient(ServerPlayerEntity player, BlockPos blockPos, PacketSender responseSender)
     {
         if (!isHoneyBeeContainer(player.world, blockPos))
         {

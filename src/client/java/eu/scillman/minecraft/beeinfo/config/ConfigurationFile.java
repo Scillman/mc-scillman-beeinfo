@@ -13,8 +13,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvType;
 import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
 
+@Environment(value=EnvType.CLIENT)
 public class ConfigurationFile
 {
     /**

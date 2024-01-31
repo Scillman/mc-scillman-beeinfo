@@ -1,10 +1,14 @@
 package eu.scillman.minecraft.beeinfo.config;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_MENU;
 import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_HUD;
 import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_X;
 import static eu.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_Y;
 
+@Environment(value=EnvType.CLIENT)
 public class ModSettings
 {
     private static ModSettingsHandler handler;

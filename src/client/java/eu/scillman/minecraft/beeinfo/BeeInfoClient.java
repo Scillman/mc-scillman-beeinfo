@@ -38,11 +38,11 @@ public class BeeInfoClient implements ClientModInitializer
     {
         HUD_TEXTURE = new Identifier(BeeInfo.MOD_ID, "textures/gui/hud.png");
 
-        ClientPlayNetworking.registerGlobalReceiver(BeeInfo.PACKET_ID_MENU, BeeInfoClient::onReceiveContainerInfoMenu);
-        ClientPlayNetworking.registerGlobalReceiver(BeeInfo.PACKET_ID_HUD, BeeInfoClient::onReceiveContainerInfoHud);
-
         ModSettings.init(BeeInfo.MOD_ID);
         ModSettings.load();
+
+        ClientPlayNetworking.registerGlobalReceiver(BeeInfo.PACKET_ID_MENU, BeeInfoClient::onReceiveContainerInfoMenu);
+        ClientPlayNetworking.registerGlobalReceiver(BeeInfo.PACKET_ID_HUD, BeeInfoClient::onReceiveContainerInfoHud);
     }
 
     /**
@@ -72,10 +72,11 @@ public class BeeInfoClient implements ClientModInitializer
     private static void onReceiveContainerInfoHud(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender responseSender)
     {
         PacketHUD packet = PacketHUD.decode(buffer);
-
-        lastHiveResponseHoneyLevel = packet.honeyLevel;
-        lastHiveResponseBeeCount = packet.beeCount;
-        lastHiveResponseBlockPos = packet.blockPos;
+        client.execute(() -> {
+            lastHiveResponseHoneyLevel = packet.honeyLevel;
+            lastHiveResponseBeeCount = packet.beeCount;
+            lastHiveResponseBlockPos = packet.blockPos;
+        });
     }
 
     /**

@@ -17,16 +17,16 @@ repositories {
     }
 }
 
-// loom {
-//     splitEnvironmentSourceSets()
+loom {
+    splitEnvironmentSourceSets()
 
-//     mods {
-//         "${project.archives_base_name}" {
-//             sourceSet sourceSets.main
-//             sourceSet sourceSets.client
-//         }
-//     }
-// }
+    mods {
+        "${project.archives_base_name}" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"

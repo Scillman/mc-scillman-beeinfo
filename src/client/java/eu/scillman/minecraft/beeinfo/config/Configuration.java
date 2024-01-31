@@ -3,24 +3,40 @@ package eu.scillman.minecraft.beeinfo.config;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvType;
 import org.jetbrains.annotations.Nullable;
 
+@Environment(value=EnvType.CLIENT)
 public class Configuration extends ConfigurationFile
 {
+    /**
+     * @brief Indicates whether the contents of the configuration have changed.
+     */
     private boolean hasChanged;
 
+    /**
+     * @brief Creates a configuration instance.
+     */
     public Configuration()
     {
         hasChanged = false;
     }
 
+    /**
+     * @brief Load the configuration from storage.
+     */
     @Override
     public void load()
     {
+        boolean hasChanged = this.hasChanged;
         super.load();
-        hasChanged = false;
+        this.hasChanged = hasChanged;
     }
 
+    /**
+     * @brief Save the configuration to storage.
+     */
     @Override
     public void save()
     {
@@ -65,6 +81,13 @@ public class Configuration extends ConfigurationFile
         }));
     }
 
+    /**
+     * @brief Get the maximum allowed value of the key.
+     * @param <T> The type of the returned value.
+     * @param key The key of whom to get its maximum value.
+     * @return The maximum allowed value of the key; otherwise, null.
+     * @remarks Maximum is inclusive, e.g. [min, max]
+     */
     @SuppressWarnings("unchecked")
     public <T extends Object> @Nullable T max(String key)
     {
@@ -72,6 +95,13 @@ public class Configuration extends ConfigurationFile
         return ((T)(items.get(key).max()));
     }
 
+    /**
+     * @brief Get the minimum allowed value of the key.
+     * @param <T> The type of the returned value.
+     * @param key The key of whom to get its minimum value.
+     * @return The minimum allowed value of the key; otherwise, null.
+     * @remarks Minimum is inclusive, e.g. [min, max]
+     */
     @SuppressWarnings("unchecked")
     public <T extends Object> @Nullable T min(String key)
     {
