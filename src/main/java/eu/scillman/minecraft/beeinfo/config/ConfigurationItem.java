@@ -3,8 +3,6 @@ package eu.scillman.minecraft.beeinfo.config;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
-import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
-
 public class ConfigurationItem
 {
     private String key;
@@ -34,8 +32,6 @@ public class ConfigurationItem
     public void setValue(Object newValue)
     {
         Object value = clamp(newValue);
-        LOGGER.info("Transormed? \"" + newValue + "\" to \"" + value + "\"");
-
         if (!value.equals(this.value))
         {
             this.value = value;
@@ -165,7 +161,6 @@ public class ConfigurationItem
         }
         else if (obj.getClass() != Float.class)
         {
-            LOGGER.info("notFloat (CLASS="+obj.getClass()+"\")");
             return defaultValue;
         }
         else

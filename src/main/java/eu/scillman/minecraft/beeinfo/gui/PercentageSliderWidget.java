@@ -1,12 +1,11 @@
 package eu.scillman.minecraft.beeinfo.gui;
 
-import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvType;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
 import net.minecraft.text.MutableText;
-import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
+import net.minecraft.text.Text;
 
 @Environment(value=EnvType.CLIENT)
 public class PercentageSliderWidget extends SliderWidget
@@ -19,8 +18,6 @@ public class PercentageSliderWidget extends SliderWidget
         super(x, y, width, height, Text.literal(""), value);
         this.callback = callback;
         this.text = text;
-
-        LOGGER.info("PSW.value = " + this.value);
 
         updateMessage();
     }

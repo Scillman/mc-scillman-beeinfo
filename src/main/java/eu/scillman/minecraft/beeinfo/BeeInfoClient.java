@@ -1,7 +1,5 @@
 package eu.scillman.minecraft.beeinfo;
 
-import org.jetbrains.annotations.Nullable;
-
 import eu.scillman.minecraft.beeinfo.config.ModSettings;
 import eu.scillman.minecraft.beeinfo.gui.InGameMenu;
 import eu.scillman.minecraft.beeinfo.network.PacketHUD;
@@ -16,6 +14,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 public class BeeInfoClient implements ClientModInitializer
 {

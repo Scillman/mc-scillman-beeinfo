@@ -1,7 +1,6 @@
 package eu.scillman.minecraft.beeinfo.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import eu.scillman.minecraft.beeinfo.BeeInfoClient;
 import eu.scillman.minecraft.beeinfo.config.ModSettings;
 import net.minecraft.block.BlockState;
@@ -84,21 +83,9 @@ public class HudRenderMixin extends DrawableHelper
         final int HUD_WIDTH = 82;
         final int HUD_HEIGHT = 59;
 
-        // Dimensions of the render area
-        int w = client.getWindow().getScaledWidth();
-        int h = client.getWindow().getScaledHeight();
-
-        // The width and height available to render the HUD
-        int aw = (w - HUD_WIDTH);
-        int ah = (h - HUD_HEIGHT);
-
-        // Offset on both axis
-        int ox = (int) (aw * ModSettings.getHudAxisX());
-        int oy = (int) (ah * ModSettings.getHudAxisY());
-
-        // Actual HUD render position
-        int x = (ox + (HUD_WIDTH / 2));
-        int y = (oy + (HUD_HEIGHT / 2));
+        // Offset on both axis to the top-left corner of the popup
+        int x = (int) ((client.getWindow().getScaledWidth() - HUD_WIDTH) * ModSettings.getHudAxisX());
+        int y = (int) ((client.getWindow().getScaledHeight() - HUD_HEIGHT) * ModSettings.getHudAxisY());
 
         // The texture to use for rendering.
         RenderSystem.setShaderTexture(0, BeeInfoClient.HUD_TEXTURE);

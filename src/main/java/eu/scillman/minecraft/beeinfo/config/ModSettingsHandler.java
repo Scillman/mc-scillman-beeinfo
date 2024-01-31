@@ -10,8 +10,6 @@ import static eu.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_ENABLE_HUD;
 import static eu.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_HUD_AXIS_X;
 import static eu.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_HUD_AXIS_Y;
 
-import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
-
 public class ModSettingsHandler extends Configuration
 {
     public ModSettingsHandler()
@@ -28,14 +26,5 @@ public class ModSettingsHandler extends Configuration
         register(KEY_SETTING_ENABLE_HUD,  HINT_SETTING_ENABLE_HUD,  null, false);
         register(KEY_SETTING_HUD_AXIS_X,  HINT_SETTING_HUD_AXIS_X,  null, 0.5f, 0.0f, 1.0f);
         register(KEY_SETTING_HUD_AXIS_Y,  HINT_SETTING_HUD_AXIS_Y,  null, 0.5f, 0.0f, 1.0f);
-    }
-
-    @Override
-    public void load()
-    {
-        super.load();
-
-        float value = get(KEY_SETTING_HUD_AXIS_X);
-        LOGGER.info( "Loaded value = " + value);
     }
 }

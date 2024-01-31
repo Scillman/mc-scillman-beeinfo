@@ -1,7 +1,7 @@
 package eu.scillman.minecraft.beeinfo.gui;
 
-import net.fabricmc.api.Environment;
 import eu.scillman.minecraft.beeinfo.config.ModSettings;
+import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -89,12 +89,14 @@ public class OptionsScreen extends Screen
             ITEM_X_LEFT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
             KEY_SETTING_ENABLE_MENU,
+            ModSettings.getEnableMenu(),
             this::onToggleMenu
         );
         buttonToggleHud = createToggleButton(
             ITEM_X_RIGHT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
             KEY_SETTING_ENABLE_HUD,
+            ModSettings.getEnableHud(),
             this::onToggleHud
         );
 
@@ -151,9 +153,9 @@ public class OptionsScreen extends Screen
         return ButtonWidget.builder(Text.translatable(text), pressAction).dimensions(x, y, width, height).build();
     }
 
-    private static CyclingButtonWidget<Boolean> createToggleButton(int x, int y, int width, int height, String text, CyclingButtonWidget.UpdateCallback<Boolean> callback)
+    private static CyclingButtonWidget<Boolean> createToggleButton(int x, int y, int width, int height, String text, boolean value, CyclingButtonWidget.UpdateCallback<Boolean> callback)
     {
-        return CyclingButtonWidget.onOffBuilder().build(x, y, width, height, Text.translatable(text), callback);
+        return CyclingButtonWidget.onOffBuilder(value).build(x, y, width, height, Text.translatable(text), callback);
     }
 
     private static PercentageSliderWidget createSlider(int x, int y, int width, int height, String text, double value, PercentageSliderWidget.UpdateCallback callback)

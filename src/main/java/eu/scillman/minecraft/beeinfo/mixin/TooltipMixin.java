@@ -1,5 +1,6 @@
 package eu.scillman.minecraft.beeinfo.mixin;
 
+import eu.scillman.minecraft.beeinfo.BeeInfo;
 import java.util.List;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.resource.language.I18n;
@@ -14,9 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import eu.scillman.minecraft.beeinfo.BeeInfo;
-
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

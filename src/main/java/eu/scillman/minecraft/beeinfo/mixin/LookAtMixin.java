@@ -1,5 +1,8 @@
 package eu.scillman.minecraft.beeinfo.mixin;
 
+import eu.scillman.minecraft.beeinfo.BeeInfo;
+import eu.scillman.minecraft.beeinfo.BeeInfoClient;
+import eu.scillman.minecraft.beeinfo.network.PacketLookAt;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -11,11 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import eu.scillman.minecraft.beeinfo.BeeInfo;
-import eu.scillman.minecraft.beeinfo.BeeInfoClient;
-import eu.scillman.minecraft.beeinfo.network.PacketLookAt;
-
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

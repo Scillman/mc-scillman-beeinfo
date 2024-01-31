@@ -2,9 +2,8 @@ package eu.scillman.minecraft.beeinfo.gui;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-
-import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvType;
 import net.minecraft.text.Text;
 
 @Environment(value=EnvType.CLIENT)

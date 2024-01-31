@@ -1,28 +1,25 @@
 package eu.scillman.minecraft.beeinfo;
 
-import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
-
-import org.jetbrains.annotations.Nullable;
-
 import eu.scillman.minecraft.beeinfo.network.PacketHUD;
 import eu.scillman.minecraft.beeinfo.network.PacketLookAt;
 import eu.scillman.minecraft.beeinfo.network.PacketMenu;
+import java.util.ArrayList;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BeehiveBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.block.BlockState;
 import net.minecraft.world.World;
-import net.minecraft.block.entity.BeehiveBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
-
-import java.util.ArrayList;;
+import org.jetbrains.annotations.Nullable;
+import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 
 public class BeeInfoServer implements ModInitializer
 {

@@ -1,10 +1,9 @@
 package eu.scillman.minecraft.beeinfo.gui;
 
-import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 import eu.scillman.minecraft.beeinfo.BeeInfo;
 import java.util.ArrayList;
-
+import java.util.List;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.gui.screen.Screen;
@@ -64,6 +63,11 @@ public class InGameMenu extends Screen
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
+        // if (!ModSettings.getEnableMenu())
+        // {
+        //     return;
+        // }
+
         if (client == null)
         {
             return;
