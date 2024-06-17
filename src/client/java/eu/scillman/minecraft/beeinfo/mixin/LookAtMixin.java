@@ -5,14 +5,9 @@ import eu.scillman.minecraft.beeinfo.BeeInfoClient;
 import eu.scillman.minecraft.beeinfo.network.PacketLookAt;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BeehiveBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
-import static eu.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
 
 @Mixin(MinecraftClient.class)
 public class LookAtMixin
@@ -67,48 +61,6 @@ public class LookAtMixin
      */
     @Nullable
     private BlockPos lastUpdateBlockPos = null;
-
-    private long nextOutTime = 0;
-
-    // /**
-    //  * @brief Called when the player tries to use an item.
-    //  */
-    // @Inject(method="doItemUse", at=@At("RETURN"))
-    // public void onDoItemUse(CallbackInfo ci)
-    // {
-    //     if (crosshairTarget == null || player == null || world == null)
-    //     {
-    //         return;
-    //     }
-
-    //     if (crosshairTarget.getType() != HitResult.Type.BLOCK)
-    //     {
-    //         return;
-    //     }
-
-    //     // These items interact with a Beehive block, so when they
-    //     // are used the player has other intentions. However if
-    //     // other blocks or items are held they may wish to look
-    //     // into the block contents.
-    //     ItemStack itemStack = player.getMainHandStack();
-    //     //if (itemStack.isOf(Items.SHEARS) ||
-    //     //    itemStack.isOf(Items.GLASS_BOTTLE))
-    //     if (itemStack.isEmpty())
-    //     {
-    //         return;
-    //     }
-
-    //     long now = System.currentTimeMillis();
-    //     if (now >= nextOutTime)
-    //     {
-    //         nextOutTime = (now + 1000);
-
-    //         if (world.isClient())
-    //             LOGGER.info("MinecraftClient.world.isClient() == true");
-    //         else
-    //             LOGGER.info("MinecraftClient.world.isClient() == false");
-    //     }
-    // }
 
     // /**
     //  */
