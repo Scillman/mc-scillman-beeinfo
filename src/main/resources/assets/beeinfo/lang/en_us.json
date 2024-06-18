@@ -1,7 +1,7 @@
 {
     "tooltip.bees"              : "§6%d Bees",
     "tooltip.unnamed"           : "§7- nameless bee",
-    "tooltip.honey"             : "§6%s Honey",
+    "tooltip.honey"             : "§6%d Honey",
     "tooltip.name"              : "§e- %s",
     "beeinfo.config.showpopup"   : "Show crosshair popup",
     "beeinfo.config.popupxpercent": "Popup position left to right",

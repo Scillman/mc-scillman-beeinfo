@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "com.github.scillman.minecraft.beeinfo.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"HudRenderMixin",
+		"LookAtMixin",
+		"TooltipMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

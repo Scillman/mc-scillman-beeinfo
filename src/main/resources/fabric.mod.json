@@ -1,48 +1,46 @@
 {
-    "schemaVersion": 1,
-    "id": "beeinfo",
-    "version": "${version}",
-    "name": "BeeInfo (1.19.3+)",
-    "description": "Rewritten Beenfo mod of Giselbaer for Minecraft versions 1.19.3 or newer.",
-    "authors": [
-        "Giselbaer",
-        "Scillman"
-    ],
-    "contact": {
+	"schemaVersion": 1,
+	"id": "beeinfo",
+	"version": "${version}",
+	"name": "BeeInfo",
+	"description": "Rewritten Beenfo mod of Giselbaer for Minecraft versions 1.21.",
+	"authors": [
+		"Giselbaer",
+		"Scillman"
+	],
+	"contact": {
         "homepage": "https://github.com/Scillman/mc-scillman-beeinfo/",
         "sources": "https://github.com/Scillman/mc-scillman-beeinfo/",
         "issues": "https://github.com/Scillman/mc-scillman-beeinfo/issues/"
     },
-    "license": "MIT",
-    "icon": "icon.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
-            "eu.scillman.minecraft.beeinfo.BeeInfoServer"
-        ],
-        "client": [
-            "eu.scillman.minecraft.beeinfo.BeeInfoClient"
-        ],
-        "modmenu": [
-            "eu.scillman.minecraft.beeinfo.gui.OptionsMenu"
+	"license": "MIT",
+	"icon": "assets/beeinfo/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.github.scillman.minecraft.beeinfo.BeeInfoServer"
+		],
+		"client": [
+			"com.github.scillman.minecraft.beeinfo.BeeInfoClient"
+		],
+		"modmenu": [
+            "com.github.scillman.minecraft.beeinfo.gui.OptionsMenu"
         ]
-    },
-    "mixins": [
-        "beeinfo.mixins.json"
-    ],
-    "depends": {
-        "fabricloader": ">=0.14.11",
-        "minecraft": ">=1.19.3",
-        "java": ">=17",
-        "fabric-api": ">=0.68.1"
-    },
-    "recommends": {
-        "modmenu": ">=5.1.0"
-    },
-    "custom": {
-        "modmenu": {
-            "badges": [],
-            "update_checker": false
-        }
-    }
+	},
+	"mixins": [
+		"beeinfo.mixins.json",
+		{
+			"config": "beeinfo.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": ">=0.100.1"
+	},
+	"suggests": {
+		"modmenu": ">=11"
+	}
 }
