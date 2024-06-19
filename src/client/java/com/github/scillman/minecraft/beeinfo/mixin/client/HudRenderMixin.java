@@ -105,12 +105,27 @@ public class HudRenderMixin
         if (honey >= 5) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+51, y+16, 83, 34, 14, 13);
 
         // Draws the bees inside the hive based on the count
-        if (BeeInfoClient.lastHiveResponseBeeCount >= 1) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+14, y+37, 83, 2, 13, 12);
-        if (BeeInfoClient.lastHiveResponseBeeCount >= 2) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+34, y+37, 83, 2, 13, 12);
-        if (BeeInfoClient.lastHiveResponseBeeCount >= 3) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+54, y+37, 83, 2, 13, 12);
+        drawBeeTexture(context, 0, x+14, y+37);
+        drawBeeTexture(context, 1, x+34, y+37);
+        drawBeeTexture(context, 2, x+54, y+37);
 
         // Draws the name of the block
         OrderedText orderedText = blockState.getBlock().getName().asOrderedText();
         context.drawText(client.textRenderer, orderedText, x + 41 - (client.textRenderer.getWidth(orderedText) / 2), y+5, 0x404040, false);
+    }
+
+    private void drawBeeTexture(DrawContext context, int index, int x, int y)
+    {
+        if (BeeInfoClient.lastHiveResponseBeeCount > index)
+        {
+            if (BeeInfoClient.lastHiveResponseChildCount > index)
+            {
+                context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+1, y+1, 101, 3, 10, 10);
+            }
+            else
+            {
+                context.drawTexture(BeeInfoClient.HUD_TEXTURE, x, y, 83, 2, 13, 12);
+            }
+        }
     }
 }

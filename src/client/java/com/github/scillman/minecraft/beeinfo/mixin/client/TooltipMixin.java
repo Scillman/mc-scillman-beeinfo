@@ -75,10 +75,11 @@ public abstract class TooltipMixin
 
             for (BeeData bee: bees)
             {
+                final String AGE = "Age";
                 NbtComponent beeEntityData = bee.entityData();
-                if (beeEntityData.contains("Age"))
+                if (beeEntityData.contains(AGE))
                 {
-                    int age = beeEntityData.copyNbt().getInt("Age");
+                    int age = beeEntityData.copyNbt().getInt(AGE);
                     if (age < 0)
                     {
                         childCount++;

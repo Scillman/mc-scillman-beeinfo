@@ -119,6 +119,25 @@ public class NbtBeehive
     }
 
     /**
+     * Get the number of child bees inside the beehive.
+     * @return The number of child bees inside the beehive.
+     */
+    public int getChildCount()
+    {
+        int count = 0;
+
+        for (NbtBee bee: this.bees)
+        {
+            if (bee.isChild())
+            {
+                ++count;
+            }
+        }
+
+        return count;
+    }
+
+    /**
      * Represents a BeeEntity in NBT data format.
      * @remarks The NBT data is in the format of when the BeeEntity is inside a Beehive tagged block.
      */
@@ -138,6 +157,24 @@ public class NbtBeehive
             final String CUSTOM_NAME = "CustomName";
             NbtCompound nbt = this.entityData.copyNbt();
             return nbt.contains(CUSTOM_NAME, NbtElement.STRING_TYPE) ? nbt.getString(CUSTOM_NAME) : "";
+        }
+
+        /**
+         * Get a boolean indicating whether the bee is a child or not.
+         * @return A boolean indicating whether the bee is a child or not.
+         */
+        public boolean isChild()
+        {
+            final String AGE = "Age";
+            NbtCompound nbt = this.entityData.copyNbt();
+
+            if (nbt.contains(AGE))
+            {
+                int age = nbt.getInt(AGE);
+                return age < 0;
+            }
+
+            return false;
         }
     }
 }
