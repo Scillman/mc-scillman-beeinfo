@@ -16,9 +16,7 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -165,7 +163,6 @@ public class NbtBeehive
             {
                 // CString == "\"\\\"Custom Name\\\"\""
                 String name = nbt.getString(CUSTOM_NAME);
-
                 StringReader reader = new StringReader(name);
                 reader.setCursor(0);
 

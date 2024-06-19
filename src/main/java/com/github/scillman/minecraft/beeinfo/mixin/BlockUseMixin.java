@@ -1,6 +1,5 @@
 package com.github.scillman.minecraft.beeinfo.mixin;
 
-// import com.github.scillman.minecraft.beeinfo.config.ModSettings;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -55,7 +54,7 @@ public class BlockUseMixin
             }
         }
     }
-    
+
     /**
      * Determines if a player is empty handed.
      * @param player The player to check for if he is empty handed.

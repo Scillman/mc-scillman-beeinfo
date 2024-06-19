@@ -1,2 +1,5 @@
-# API documentation
-* [yarn 1.19.3+build.5](https://maven.fabricmc.net/docs/yarn-1.19.3+build.5/index.html)
+# Description
+Rewritten and updated version of Giselbaer's [Beenfo mod](https://github.com/gbl/Beenfo).
+
+# Links
+* [FabricMC Developers](https://fabricmc.net/develop/)
