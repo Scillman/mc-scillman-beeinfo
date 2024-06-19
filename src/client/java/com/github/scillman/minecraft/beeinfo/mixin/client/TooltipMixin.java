@@ -8,6 +8,7 @@ import net.minecraft.block.entity.BeehiveBlockEntity.BeeData;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -64,13 +65,26 @@ public abstract class TooltipMixin
 
         ItemStack me = (ItemStack)(Object)this;
 
-        int beeCount = 0;
+        int beeCount = 0, childCount = 0;
         int honeyLevel = 0;
 
         List<BeeData> bees = me.get(DataComponentTypes.BEES);
         if (bees != null)
         {
             beeCount = bees.size();
+
+            for (BeeData bee: bees)
+            {
+                NbtComponent beeEntityData = bee.entityData();
+                if (beeEntityData.contains("Age"))
+                {
+                    int age = beeEntityData.copyNbt().getInt("Age");
+                    if (age < 0)
+                    {
+                        childCount++;
+                    }
+                }
+            }
         }
 
         BlockStateComponent bsc = me.get(DataComponentTypes.BLOCK_STATE);
@@ -81,7 +95,16 @@ public abstract class TooltipMixin
 
         if (beeCount > 0 || honeyLevel > 0)
         {
-            list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees", beeCount)));
+            if (childCount > 0)
+            {
+                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees_child", childCount)));
+                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees_adult", (beeCount - childCount))));
+            }
+            else
+            {
+                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees", beeCount)));
+            }
+
             list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.honey", honeyLevel)));
         }
 

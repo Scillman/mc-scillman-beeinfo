@@ -14,6 +14,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
+import static com.github.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
+
 /**
  * @brief The screen used for rendering the menu.
  */
@@ -38,7 +40,8 @@ public class InGameMenu extends Screen
         int max = Math.min(beeCount, beeNames.size());
         for (int i = 0; i < max; i++)
         {
-            this.beeNames.add(Text.of(beeNames.get(i)));
+            LOGGER.info("beeName = '{}'", beeNames.get(i));
+            this.beeNames.add(Text.translatable(beeNames.get(i)));
         }
 
         honeyBottle = new ItemStack(Items.HONEY_BOTTLE, 1);

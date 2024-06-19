@@ -12,6 +12,7 @@ import net.minecraft.block.entity.BeehiveBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
@@ -136,7 +137,7 @@ public class NbtBeehive
         {
             final String CUSTOM_NAME = "CustomName";
             NbtCompound nbt = this.entityData.copyNbt();
-            return nbt.contains(CUSTOM_NAME) ? nbt.getString(CUSTOM_NAME) : "";
+            return nbt.contains(CUSTOM_NAME, NbtElement.STRING_TYPE) ? nbt.getString(CUSTOM_NAME) : "";
         }
     }
 }
