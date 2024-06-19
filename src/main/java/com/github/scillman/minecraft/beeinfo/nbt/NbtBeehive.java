@@ -119,16 +119,16 @@ public class NbtBeehive
     }
 
     /**
-     * Get the number of child bees inside the beehive.
-     * @return The number of child bees inside the beehive.
+     * Get the number of baby bees inside the beehive.
+     * @return The number of baby bees inside the beehive.
      */
-    public int getChildCount()
+    public int getBabyBeeCount()
     {
         int count = 0;
 
         for (NbtBee bee: this.bees)
         {
-            if (bee.isChild())
+            if (bee.isBaby())
             {
                 ++count;
             }
@@ -160,10 +160,10 @@ public class NbtBeehive
         }
 
         /**
-         * Get a boolean indicating whether the bee is a child or not.
-         * @return A boolean indicating whether the bee is a child or not.
+         * Get a boolean indicating whether the bee is a baby or not.
+         * @return A boolean indicating whether the bee is a baby or not.
          */
-        public boolean isChild()
+        public boolean isBaby()
         {
             final String AGE = "Age";
             NbtCompound nbt = this.entityData.copyNbt();

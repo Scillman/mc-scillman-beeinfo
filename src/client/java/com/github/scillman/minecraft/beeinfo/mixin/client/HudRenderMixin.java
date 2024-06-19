@@ -118,7 +118,7 @@ public class HudRenderMixin
     {
         if (BeeInfoClient.lastHiveResponseBeeCount > index)
         {
-            if (BeeInfoClient.lastHiveResponseChildCount > index)
+            if (BeeInfoClient.lastHiveResponseBabyBeeCount > index)
             {
                 context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+1, y+1, 101, 3, 10, 10);
             }

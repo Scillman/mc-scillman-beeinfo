@@ -65,7 +65,7 @@ public abstract class TooltipMixin
 
         ItemStack me = (ItemStack)(Object)this;
 
-        int beeCount = 0, childCount = 0;
+        int beeCount = 0, babyBeeCount = 0;
         int honeyLevel = 0;
 
         List<BeeData> bees = me.get(DataComponentTypes.BEES);
@@ -82,7 +82,7 @@ public abstract class TooltipMixin
                     int age = beeEntityData.copyNbt().getInt(AGE);
                     if (age < 0)
                     {
-                        childCount++;
+                        babyBeeCount++;
                     }
                 }
             }
@@ -96,10 +96,10 @@ public abstract class TooltipMixin
 
         if (beeCount > 0 || honeyLevel > 0)
         {
-            if (childCount > 0)
+            if (babyBeeCount > 0)
             {
-                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees_child", childCount)));
-                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees_adult", (beeCount - childCount))));
+                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees_baby", babyBeeCount)));
+                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees_adult", (beeCount - babyBeeCount))));
             }
             else
             {

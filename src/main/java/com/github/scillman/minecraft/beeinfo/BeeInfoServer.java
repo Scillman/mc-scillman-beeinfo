@@ -52,7 +52,7 @@ public class BeeInfoServer implements ModInitializer
 		if (blockState.contains(HONEY_LEVEL))
 		{
 			NbtBeehive beehive = NbtBeehive.create(world, blockPos, world.getBlockState(blockPos));
-			responseSender.sendPacket(new PacketHUD(beehive.getHoneyLevel(), beehive.getBeeCount(), beehive.getChildCount(), blockPos));
+			responseSender.sendPacket(new PacketHUD(beehive.getHoneyLevel(), beehive.getBeeCount(), beehive.getBabyBeeCount(), blockPos));
 		}
     }
 }

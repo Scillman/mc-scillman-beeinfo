@@ -1,7 +1,7 @@
 {
     "tooltip.bees"              : "§6%d Bees",
     "tooltip.bees_adult"        : "§6%d Adult Bees",
-    "tooltip.bees_child"        : "§6%d Child Bees",
+    "tooltip.bees_baby"        : "§6%d Baby Bees",
     "tooltip.unnamed"           : "§7- nameless bee",
     "tooltip.honey"             : "§6%d Honey",
     "tooltip.name"              : "§e- %s",

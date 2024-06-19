@@ -20,7 +20,7 @@ public class BeeInfoClient implements ClientModInitializer
     public static BlockPos lastHiveResponseBlockPos = null;
     public static int lastHiveResponseHoneyLevel = 0;
     public static int lastHiveResponseBeeCount = 0;
-    public static int lastHiveResponseChildCount = 0;
+    public static int lastHiveResponseBabyBeeCount = 0;
 
     /**
      * @brief The texture used for rendering the HUD.
@@ -71,7 +71,7 @@ public class BeeInfoClient implements ClientModInitializer
         context.client().execute(() -> {
             lastHiveResponseHoneyLevel = payload.getHoneyLevel();
             lastHiveResponseBeeCount = payload.getBeeCount();
-            lastHiveResponseChildCount = payload.getChildCount();
+            lastHiveResponseBabyBeeCount = payload.getBabyBeeCount();
             lastHiveResponseBlockPos = payload.getBlockPos();
         });
     }
