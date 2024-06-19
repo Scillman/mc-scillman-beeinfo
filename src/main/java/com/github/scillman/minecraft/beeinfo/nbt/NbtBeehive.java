@@ -3,6 +3,8 @@ package com.github.scillman.minecraft.beeinfo.nbt;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -14,7 +16,9 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -156,7 +160,26 @@ public class NbtBeehive
         {
             final String CUSTOM_NAME = "CustomName";
             NbtCompound nbt = this.entityData.copyNbt();
-            return nbt.contains(CUSTOM_NAME, NbtElement.STRING_TYPE) ? nbt.getString(CUSTOM_NAME) : "";
+
+            if (nbt.contains(CUSTOM_NAME, NbtElement.STRING_TYPE))
+            {
+                // CString == "\"\\\"Custom Name\\\"\""
+                String name = nbt.getString(CUSTOM_NAME);
+
+                StringReader reader = new StringReader(name);
+                reader.setCursor(0);
+
+                try
+                {
+                    return reader.readQuotedString();
+                }
+                catch (CommandSyntaxException ex)
+                {
+                    LOGGER.error("StringReader exception for NbtBeehive CustomName", ex);
+                }
+            }
+
+            return "";
         }
 
         /**
