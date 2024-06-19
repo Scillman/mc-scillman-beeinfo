@@ -1,11 +1,11 @@
 {
-	"required": true,
-	"package": "com.github.scillman.minecraft.beeinfo.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"BlockUseMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+    "required": true,
+    "package": "com.github.scillman.minecraft.beeinfo.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "BlockUseMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
 }

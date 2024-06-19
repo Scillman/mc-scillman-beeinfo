@@ -20,39 +20,39 @@ import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 
 public class BeeInfoServer implements ModInitializer
 {
-	@Override
-	public void onInitialize()
+    @Override
+    public void onInitialize()
     {
-		PayloadTypeRegistry.playS2C().register(PacketHUD.ID, PacketHUD.CODEC);
-		PayloadTypeRegistry.playS2C().register(PacketMenu.ID, PacketMenu.CODEC);
-		PayloadTypeRegistry.playC2S().register(PacketLookAt.ID, PacketLookAt.CODEC);
+        PayloadTypeRegistry.playS2C().register(PacketHUD.ID, PacketHUD.CODEC);
+        PayloadTypeRegistry.playS2C().register(PacketMenu.ID, PacketMenu.CODEC);
+        PayloadTypeRegistry.playC2S().register(PacketLookAt.ID, PacketLookAt.CODEC);
 
-		ServerPlayNetworking.registerGlobalReceiver(PacketLookAt.ID, BeeInfoServer::onLookAtPayloadReceived);
-	}
+        ServerPlayNetworking.registerGlobalReceiver(PacketLookAt.ID, BeeInfoServer::onLookAtPayloadReceived);
+    }
 
-	public static void onLookAtPayloadReceived(PacketLookAt payload, ServerPlayNetworking.Context context)
-	{
-		sendHudInfoToClient(context.player(), payload.getBlockPos(), context.responseSender());
-	}
-
-	public static void sendBlockInfoToClient(ServerPlayerEntity player, int honeyLevel, ArrayList<String> beeNames)
-	{
-		String bee1 = beeNames.size() > 0 ? beeNames.get(0) : "";
-		String bee2 = beeNames.size() > 1 ? beeNames.get(1) : "";
-		String bee3 = beeNames.size() > 2 ? beeNames.get(2) : "";
-		ServerPlayNetworking.send(player, new PacketMenu(honeyLevel, beeNames.size(), bee1, bee2, bee3));
-	}
-
-	private static void sendHudInfoToClient(ServerPlayerEntity player, BlockPos blockPos, PacketSender responseSender)
+    public static void onLookAtPayloadReceived(PacketLookAt payload, ServerPlayNetworking.Context context)
     {
-		World world = player.getWorld();
-		assert(world != null);
+        sendHudInfoToClient(context.player(), payload.getBlockPos(), context.responseSender());
+    }
 
-		BlockState blockState = world.getBlockState(blockPos);
-		if (blockState.contains(HONEY_LEVEL))
-		{
-			NbtBeehive beehive = NbtBeehive.create(world, blockPos, world.getBlockState(blockPos));
-			responseSender.sendPacket(new PacketHUD(beehive.getHoneyLevel(), beehive.getBeeCount(), beehive.getBabyBeeCount(), blockPos));
-		}
+    public static void sendBlockInfoToClient(ServerPlayerEntity player, int honeyLevel, ArrayList<String> beeNames)
+    {
+        String bee1 = beeNames.size() > 0 ? beeNames.get(0) : "";
+        String bee2 = beeNames.size() > 1 ? beeNames.get(1) : "";
+        String bee3 = beeNames.size() > 2 ? beeNames.get(2) : "";
+        ServerPlayNetworking.send(player, new PacketMenu(honeyLevel, beeNames.size(), bee1, bee2, bee3));
+    }
+
+    private static void sendHudInfoToClient(ServerPlayerEntity player, BlockPos blockPos, PacketSender responseSender)
+    {
+        World world = player.getWorld();
+        assert(world != null);
+
+        BlockState blockState = world.getBlockState(blockPos);
+        if (blockState.contains(HONEY_LEVEL))
+        {
+            NbtBeehive beehive = NbtBeehive.create(world, blockPos, world.getBlockState(blockPos));
+            responseSender.sendPacket(new PacketHUD(beehive.getHoneyLevel(), beehive.getBeeCount(), beehive.getBabyBeeCount(), blockPos));
+        }
     }
 }
