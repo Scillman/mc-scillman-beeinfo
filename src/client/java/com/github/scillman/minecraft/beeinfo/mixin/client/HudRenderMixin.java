@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.github.scillman.minecraft.beeinfo.BeeInfoClient;
 import com.github.scillman.minecraft.beeinfo.config.ModSettings;
-import com.mojang.blaze3d.systems.RenderSystem;
+//import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -91,7 +91,7 @@ public class HudRenderMixin
         int y = (int) ((client.getWindow().getScaledHeight() - HUD_HEIGHT) * ModSettings.getHudAxisY());
 
         // The texture to use for rendering.
-        RenderSystem.setShaderTexture(0, BeeInfoClient.HUD_TEXTURE);
+        //RenderSystem.setShaderTexture(0, BeeInfoClient.HUD_TEXTURE);
 
         // Draw the background texture
         context.drawTexture(BeeInfoClient.HUD_TEXTURE, x, y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
