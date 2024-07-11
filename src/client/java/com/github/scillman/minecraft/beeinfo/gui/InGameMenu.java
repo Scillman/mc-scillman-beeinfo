@@ -1,6 +1,5 @@
 package com.github.scillman.minecraft.beeinfo.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.github.scillman.minecraft.beeinfo.BeeInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,26 +73,23 @@ public class InGameMenu extends Screen
 
         renderBackground(context, mouseX, mouseY, delta);
 
-        RenderSystem.setShaderTexture(0, MENU_TEXTURE);
+        context.drawTexture(MENU_TEXTURE, x, y, 0, 0, 176, 30); // header
+
+        int minRows = getMinBeeRows();
+        for (int i = 0; i < minRows; i++)
         {
-            context.drawTexture(MENU_TEXTURE, x, y, 0, 0, 176, 30); // header
+            context.drawTexture(MENU_TEXTURE, x, y+30+(i*30), 0, 30, 176, 30); // icon+name background
 
-            int minRows = getMinBeeRows();
-            for (int i = 0; i < minRows; i++)
+            if (i < beeNames.size())
             {
-                context.drawTexture(MENU_TEXTURE, x, y+30+(i*30), 0, 30, 176, 30); // icon+name background
-
-                if (i < beeNames.size())
-                {
-                    context.drawTexture(MENU_TEXTURE, x+9, y+32+(i*30), 0, 166, 22, 22); // icon
-                }
+                context.drawTexture(MENU_TEXTURE, x+9, y+32+(i*30), 0, 166, 22, 22); // icon
             }
-            context.drawTexture(MENU_TEXTURE, x, y+30+(minRows*30), 0, 157, 176, 8); // footer
+        }
+        context.drawTexture(MENU_TEXTURE, x, y+30+(minRows*30), 0, 157, 176, 8); // footer
 
-            for (int i = Math.max(5, honeyLevel); i < 9; i++)
-            {
-                context.drawTexture(MENU_TEXTURE, x+7+(i*18), y+7, 8, 64, 18, 18); // bottle slots
-            }
+        for (int i = Math.max(5, honeyLevel); i < 9; i++)
+        {
+            context.drawTexture(MENU_TEXTURE, x+7+(i*18), y+7, 8, 64, 18, 18); // bottle slots
         }
 
         for (int i = 0; i < beeNames.size(); i++)
