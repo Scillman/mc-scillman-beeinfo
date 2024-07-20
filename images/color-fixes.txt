@@ -1,4 +1,0 @@
-
-05:05:04 = 00:00:00:ff * ff:ff:ff:??    --> 05  above
-3f:41:41 = 00:00:00:ff * ff:ff:ff:??    --> 41  center
-0c:0d:0d = 00:00:00:ff * ff:ff:ff:??    --> 0d  right

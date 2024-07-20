@@ -1,4 +1,4 @@
-![Build](https://github.com/Scillman/mc-scillman-beeinfo/actions/workflows/build.yml/badge.svg?branch=1.21&event=push)
+![BeeInfo](https://github.com/Scillman/mc-scillman-beeinfo/actions/workflows/build.yml/badge.svg?branch=1.21&event=push)
 
 # Description
 _BeeInfo is a rewritten and updated version of Giselbaer's [Beenfo mod](https://github.com/gbl/Beenfo)._
