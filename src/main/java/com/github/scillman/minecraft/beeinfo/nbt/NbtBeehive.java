@@ -157,7 +157,10 @@ public class NbtBeehive
         public String getName()
         {
             final String CUSTOM_NAME = "CustomName";
-            NbtCompound nbt = this.entityData.copyNbt();
+
+            @SuppressWarnings("deprecation")
+            NbtCompound nbt = this.entityData.getNbt();
+            //NbtCompound nbt = this.entityData.copyNbt();
 
             if (nbt.contains(CUSTOM_NAME, NbtElement.STRING_TYPE))
             {
@@ -181,17 +184,19 @@ public class NbtBeehive
 
         /**
          * Get a boolean indicating whether the bee is a baby or not.
-         * @return A boolean indicating whether the bee is a baby or not.
+         * @return True if the bee is a baby; otherwise, false.
          */
         public boolean isBaby()
         {
             final String AGE = "Age";
-            NbtCompound nbt = this.entityData.copyNbt();
+
+            @SuppressWarnings("deprecation")
+            NbtCompound nbt = this.entityData.getNbt();
+            //NbtCompound nbt = this.entityData.copyNbt();
 
             if (nbt.contains(AGE))
             {
-                int age = nbt.getInt(AGE);
-                return age < 0;
+                return 0 > nbt.getInt(AGE);
             }
 
             return false;
