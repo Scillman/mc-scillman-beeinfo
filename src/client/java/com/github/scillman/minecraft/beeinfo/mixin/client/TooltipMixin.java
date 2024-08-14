@@ -1,5 +1,6 @@
 package com.github.scillman.minecraft.beeinfo.mixin.client;
 
+import com.github.scillman.minecraft.beeinfo.registry.ModConstants;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 import java.util.List;
@@ -15,7 +16,9 @@ import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -98,18 +101,30 @@ public abstract class TooltipMixin
         {
             if (babyBeeCount > 0)
             {
-                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees_baby", babyBeeCount)));
-                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees_adult", (beeCount - babyBeeCount))));
+                list.add(Math.min(1, list.size()), asTooltip(ModConstants.TOOLTIP_BEES_BABY, babyBeeCount));
+                list.add(Math.min(1, list.size()), asTooltip(ModConstants.TOOLTIP_BEES_ADULT, (beeCount - babyBeeCount)));
             }
             else
             {
-                list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.bees", beeCount)));
+                list.add(Math.min(1, list.size()), asTooltip(ModConstants.TOOLTIP_BEES, beeCount));
             }
 
-            list.add(Math.min(1, list.size()), Text.literal(I18n.translate("tooltip.honey", honeyLevel)));
+            list.add(Math.min(1, list.size()), asTooltip(ModConstants.TOOLTIP_HONEY, honeyLevel));
         }
 
         return list;
+    }
+
+    /**
+     *
+     * @param id
+     * @param value
+     * @return
+     */
+    private MutableText asTooltip(Identifier id, int value)
+    {
+        return Text.literal(I18n.translate(id.toTranslationKey(ModConstants.KEY_TOOLTIP), value));
+        //return Text.translatable(id.toTranslationKey(ModConstants.KEY_TOOLTIP), value);
     }
 
     /**

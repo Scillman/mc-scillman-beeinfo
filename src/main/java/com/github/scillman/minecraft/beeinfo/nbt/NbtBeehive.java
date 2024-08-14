@@ -20,7 +20,7 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
+import static com.github.scillman.minecraft.beeinfo.ModMain.LOGGER;
 
 /**
  * Represents a BeehiveBlockEntity in NBT data format.

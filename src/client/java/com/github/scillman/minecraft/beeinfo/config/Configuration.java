@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.fabricmc.api.Environment;
+import net.minecraft.util.Identifier;
 import net.fabricmc.api.EnvType;
 import org.jetbrains.annotations.Nullable;
+
+import com.github.scillman.minecraft.beeinfo.ModMain;
 
 @Environment(value=EnvType.CLIENT)
 public class Configuration extends ConfigurationFile
@@ -50,15 +53,15 @@ public class Configuration extends ConfigurationFile
     /**
      * @brief Register a configuration option.
      * @param key The key to use for the option.
-     * @param hint The hint to describe what it does.
      * @param value The current value.
      * @param defaultValue The default value.
      */
-    public void register(String key, String hint, @Nullable Object value, Object defaultValue)
+    public void register(Identifier key, @Nullable Object value, Object defaultValue)
     {
-        assert(!items.containsKey(key));
+        String id = key.getPath();
+        assert(!items.containsKey(id));
 
-        items.put(key, new ConfigurationItem(key, hint, value, defaultValue, (ConfigurationItem item) -> {
+        items.put(id, new ConfigurationItem(id, value, defaultValue, (ConfigurationItem item) -> {
             hasChanged = true;
         }));
     }
@@ -66,17 +69,17 @@ public class Configuration extends ConfigurationFile
     /**
      * @brief Register a configuration option.
      * @param key The key to use for the option.
-     * @param hint The hint to describe what it does.
      * @param value The current value.
      * @param defaultValue The default value.
      * @param minValue The minimum value.
      * @param maxValue The maximum value.
      */
-    public void register(String key, String hint, @Nullable Object value, Object defaultValue, Object minValue, Object maxValue)
+    public void register(Identifier key, @Nullable Object value, Object defaultValue, Object minValue, Object maxValue)
     {
-        assert(!items.containsKey(key));
+        String id = key.getPath();
+        assert(!items.containsKey(id));
 
-        items.put(key, new ConfigurationItem(key, hint, value, defaultValue, minValue, maxValue, (ConfigurationItem item) -> {
+        items.put(id, new ConfigurationItem(id, value, defaultValue, minValue, maxValue, (ConfigurationItem item) -> {
             hasChanged = true;
         }));
     }
@@ -89,10 +92,11 @@ public class Configuration extends ConfigurationFile
      * @remarks Maximum is inclusive, e.g. [min, max]
      */
     @SuppressWarnings("unchecked")
-    public <T extends Object> @Nullable T max(String key)
+    public <T extends Object> @Nullable T max(Identifier key)
     {
-        assert(items.containsKey(key));
-        return ((T)(items.get(key).max()));
+        String id = key.getPath();
+        assert(items.containsKey(id));
+        return ((T)(items.get(id).max()));
     }
 
     /**
@@ -103,10 +107,11 @@ public class Configuration extends ConfigurationFile
      * @remarks Minimum is inclusive, e.g. [min, max]
      */
     @SuppressWarnings("unchecked")
-    public <T extends Object> @Nullable T min(String key)
+    public <T extends Object> @Nullable T min(Identifier key)
     {
-        assert(items.containsKey(key));
-        return ((T)(items.get(key).min()));
+        String id = key.getPath();
+        assert(items.containsKey(id));
+        return ((T)(items.get(id).min()));
     }
 
     /**
@@ -116,10 +121,11 @@ public class Configuration extends ConfigurationFile
      * @return The value of the key; otherwise, null.
      */
     @SuppressWarnings("unchecked")
-    public <T extends Object> @Nullable T get(String key)
+    public <T extends Object> @Nullable T get(Identifier key)
     {
-        assert(items.containsKey(key));
-        return ((T)(items.get(key).getValue()));
+        String id = key.getPath();
+        assert(items.containsKey(id));
+        return ((T)(items.get(id).getValue()));
     }
 
     /**
@@ -127,21 +133,23 @@ public class Configuration extends ConfigurationFile
      * @param key The key whoms value to change.
      * @param value The new value.
      */
-    public void set(String key, Object value)
+    public void set(Identifier key, Object value)
     {
-        assert(items.containsKey(key));
-        items.get(key).setValue(value);
+        String id = key.getPath();
+        assert(items.containsKey(id));
+        items.get(id).setValue(value);
     }
 
     /**
      * @brief Reset the value of the given key.
      * @param key The key whoms value to reset.
      */
-    public void reset(String key)
+    public void reset(Identifier key)
     {
-        assert(items.containsKey(key));
+        String id = key.getPath();
+        assert(items.containsKey(id));
 
-        ConfigurationItem item = items.get(key);
+        ConfigurationItem item = items.get(id);
         item.setValue(item.getDefault());
     }
 
@@ -149,10 +157,17 @@ public class Configuration extends ConfigurationFile
      * @brief Get a list of registered keys.
      * @return A list of all the registered keys.
      */
-    public List<String> keys()
+    public List<Identifier> keys()
     {
         ArrayList<String> keys = new ArrayList<String>(items.keySet());
         Collections.sort(keys);
-        return keys;
+
+        ArrayList<Identifier> result = new ArrayList<>(keys.size());
+        for (String key: keys)
+        {
+            result.add(Identifier.of(ModMain.MOD_ID, key));
+        }
+
+        return result;
     }
 }

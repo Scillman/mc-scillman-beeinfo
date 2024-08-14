@@ -3,7 +3,7 @@ package com.github.scillman.minecraft.beeinfo.network;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.scillman.minecraft.beeinfo.BeeInfo;
+import com.github.scillman.minecraft.beeinfo.registry.ModConstants;
 
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -15,7 +15,7 @@ import net.minecraft.network.packet.CustomPayload;
  */
 public record PacketMenu(int honeyLevel, int beeCount, String beeName1, String beeName2, String beeName3) implements CustomPayload
 {
-    public static final CustomPayload.Id<PacketMenu> ID = new CustomPayload.Id<>(BeeInfo.PACKET_ID_MENU);
+    public static final CustomPayload.Id<PacketMenu> ID = new CustomPayload.Id<>(ModConstants.PACKET_ID_MENU);
     public static final PacketCodec<RegistryByteBuf, PacketMenu> CODEC = PacketCodec.tuple(
         PacketCodecs.INTEGER, PacketMenu::honeyLevel,
         PacketCodecs.INTEGER, PacketMenu::beeCount,

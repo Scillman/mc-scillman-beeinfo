@@ -1,6 +1,6 @@
 package com.github.scillman.minecraft.beeinfo.network;
 
-import com.github.scillman.minecraft.beeinfo.BeeInfo;
+import com.github.scillman.minecraft.beeinfo.registry.ModConstants;
 
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
  */
 public record PacketHUD(int honeyLevel, int beeCount, int babyBeeCount, BlockPos blockPos) implements CustomPayload
 {
-    public static final CustomPayload.Id<PacketHUD> ID = new CustomPayload.Id<>(BeeInfo.PACKET_ID_HUD);
+    public static final CustomPayload.Id<PacketHUD> ID = new CustomPayload.Id<>(ModConstants.PACKET_ID_HUD);
     public static final PacketCodec<RegistryByteBuf, PacketHUD> CODEC = PacketCodec.tuple(
         PacketCodecs.INTEGER, PacketHUD::honeyLevel,
         PacketCodecs.INTEGER, PacketHUD::beeCount,

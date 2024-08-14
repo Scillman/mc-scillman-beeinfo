@@ -8,9 +8,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.github.scillman.minecraft.beeinfo.BeeInfoClient;
+import com.github.scillman.minecraft.beeinfo.ModClient;
 import com.github.scillman.minecraft.beeinfo.config.ModSettings;
-//import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -52,7 +51,7 @@ public class HudRenderMixin
             return;
         }
 
-        BlockPos blockPos = BeeInfoClient.lastHiveResponseBlockPos;
+        BlockPos blockPos = ModClient.lastHiveResponseBlockPos;
 
         // It is possible for a block to have been destroyed locally but not
         // yet having received new lookAt data. Therefor it is imperative
@@ -90,19 +89,16 @@ public class HudRenderMixin
         int x = (int) ((client.getWindow().getScaledWidth() - HUD_WIDTH) * ModSettings.getHudAxisX());
         int y = (int) ((client.getWindow().getScaledHeight() - HUD_HEIGHT) * ModSettings.getHudAxisY());
 
-        // The texture to use for rendering.
-        //RenderSystem.setShaderTexture(0, BeeInfoClient.HUD_TEXTURE);
-
         // Draw the background texture
-        context.drawTexture(BeeInfoClient.HUD_TEXTURE, x, y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
+        context.drawTexture(ModClient.HUD_TEXTURE, x, y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
 
         // Fills the honey slots with honey if the respective level is met
-        int honey = BeeInfoClient.lastHiveResponseHoneyLevel; //blockState.get(HONEY_LEVEL);
-        if (honey >= 1) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+17, y+16, 84, 17, 6, 7);
-        if (honey >= 2) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+24, y+22, 84, 17, 6, 7);
-        if (honey >= 3) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+31, y+16, 84, 17, 6, 7);
-        if (honey >= 4) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+38, y+22, 84, 17, 6, 7);
-        if (honey >= 5) context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+51, y+16, 83, 34, 14, 13);
+        int honey = ModClient.lastHiveResponseHoneyLevel; //blockState.get(HONEY_LEVEL);
+        if (honey >= 1) context.drawTexture(ModClient.HUD_TEXTURE, x+17, y+16, 84, 17, 6, 7);
+        if (honey >= 2) context.drawTexture(ModClient.HUD_TEXTURE, x+24, y+22, 84, 17, 6, 7);
+        if (honey >= 3) context.drawTexture(ModClient.HUD_TEXTURE, x+31, y+16, 84, 17, 6, 7);
+        if (honey >= 4) context.drawTexture(ModClient.HUD_TEXTURE, x+38, y+22, 84, 17, 6, 7);
+        if (honey >= 5) context.drawTexture(ModClient.HUD_TEXTURE, x+51, y+16, 83, 34, 14, 13);
 
         // Draws the bees inside the hive based on the count
         drawBeeTexture(context, 0, x+14, y+37);
@@ -114,17 +110,24 @@ public class HudRenderMixin
         context.drawText(client.textRenderer, orderedText, x + 41 - (client.textRenderer.getWidth(orderedText) / 2), y+5, 0x404040, false);
     }
 
+    /**
+     * Draws a single bee texture. The drawn bee depends on its age.
+     * @param context The drawing context.
+     * @param index The index of the bee to draw.
+     * @param x The x-coordinate.
+     * @param y The y-coordinate.
+     */
     private void drawBeeTexture(DrawContext context, int index, int x, int y)
     {
-        if (BeeInfoClient.lastHiveResponseBeeCount > index)
+        if (ModClient.lastHiveResponseBeeCount > index)
         {
-            if (BeeInfoClient.lastHiveResponseBabyBeeCount > index)
+            if (ModClient.lastHiveResponseBabyBeeCount > index)
             {
-                context.drawTexture(BeeInfoClient.HUD_TEXTURE, x+1, y+1, 101, 3, 10, 10);
+                context.drawTexture(ModClient.HUD_TEXTURE, x+1, y+1, 101, 3, 10, 10);
             }
             else
             {
-                context.drawTexture(BeeInfoClient.HUD_TEXTURE, x, y, 83, 2, 13, 12);
+                context.drawTexture(ModClient.HUD_TEXTURE, x, y, 83, 2, 13, 12);
             }
         }
     }

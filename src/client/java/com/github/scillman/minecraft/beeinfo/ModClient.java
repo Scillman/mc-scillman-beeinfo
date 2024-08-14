@@ -14,7 +14,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class BeeInfoClient implements ClientModInitializer
+public class ModClient implements ClientModInitializer
 {
    @Nullable
     public static BlockPos lastHiveResponseBlockPos = null;
@@ -35,13 +35,13 @@ public class BeeInfoClient implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        HUD_TEXTURE = Identifier.of(BeeInfo.MOD_ID, "textures/gui/hud.png");
+        HUD_TEXTURE = Identifier.of(ModMain.MOD_ID, "textures/gui/hud.png");
 
-        ModSettings.init(BeeInfo.MOD_ID);
+        ModSettings.init(ModMain.MOD_ID);
         ModSettings.load();
 
-        ClientPlayNetworking.registerGlobalReceiver(PacketHUD.ID, BeeInfoClient::new_onReceiveContainerInfoHud);
-        ClientPlayNetworking.registerGlobalReceiver(PacketMenu.ID, BeeInfoClient::new_onReceiveContainerInfoMenu);
+        ClientPlayNetworking.registerGlobalReceiver(PacketHUD.ID, ModClient::new_onReceiveContainerInfoHud);
+        ClientPlayNetworking.registerGlobalReceiver(PacketMenu.ID, ModClient::new_onReceiveContainerInfoMenu);
     }
 
     /**

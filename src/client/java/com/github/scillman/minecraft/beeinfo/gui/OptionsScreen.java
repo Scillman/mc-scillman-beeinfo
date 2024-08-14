@@ -1,6 +1,8 @@
 package com.github.scillman.minecraft.beeinfo.gui;
 
 import com.github.scillman.minecraft.beeinfo.config.ModSettings;
+import com.github.scillman.minecraft.beeinfo.registry.ModConstants;
+
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.gui.DrawContext;
@@ -8,16 +10,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.text.Text;
-
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_MENU;
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_HUD;
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_X;
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_Y;
-
-// import static com.github.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_ENABLE_MENU;
-// import static com.github.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_ENABLE_HUD;
-// import static com.github.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_HUD_AXIS_X;
-// import static com.github.scillman.minecraft.beeinfo.BeeInfo.HINT_SETTING_HUD_AXIS_Y;
+import net.minecraft.util.Identifier;
 
 @Environment(value=EnvType.CLIENT)
 public class OptionsScreen extends Screen
@@ -89,14 +82,14 @@ public class OptionsScreen extends Screen
         buttonToggleMenu = createToggleButton(
             ITEM_X_LEFT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
-            KEY_SETTING_ENABLE_MENU,
+            ModConstants.KEY_SETTING_ENABLE_MENU,
             ModSettings.getEnableMenu(),
             this::onToggleMenu
         );
         buttonToggleHud = createToggleButton(
             ITEM_X_RIGHT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
-            KEY_SETTING_ENABLE_HUD,
+            ModConstants.KEY_SETTING_ENABLE_HUD,
             ModSettings.getEnableHud(),
             this::onToggleHud
         );
@@ -106,14 +99,14 @@ public class OptionsScreen extends Screen
         sliderHudAxisX = createSlider(
             ITEM_X_LEFT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
-            KEY_SETTING_HUD_AXIS_X,
+            ModConstants.KEY_SETTING_HUD_AXIS_X,
             ModSettings.getHudAxisX(),
             this::onHudAxisXChanged
         );
         sliderHudAxisY = createSlider(
             ITEM_X_RIGHT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
-            KEY_SETTING_HUD_AXIS_Y,
+            ModConstants.KEY_SETTING_HUD_AXIS_Y,
             ModSettings.getHudAxisY(),
             this::onHudAxisYChanged
         );
@@ -123,7 +116,7 @@ public class OptionsScreen extends Screen
         buttonDone = createButton(
             (width/4), nextY,
             (width/2), ITEM_HEIGHT,
-            "Done",
+            ModConstants.MENU_BUTTON_DONE.toTranslationKey(ModConstants.KEY_MENU),
             this::onPressedButtonDone
         );
 
@@ -150,13 +143,13 @@ public class OptionsScreen extends Screen
         return ButtonWidget.builder(Text.translatable(text), pressAction).dimensions(x, y, width, height).build();
     }
 
-    private static CyclingButtonWidget<Boolean> createToggleButton(int x, int y, int width, int height, String text, boolean value, CyclingButtonWidget.UpdateCallback<Boolean> callback)
+    private static CyclingButtonWidget<Boolean> createToggleButton(int x, int y, int width, int height, Identifier text, boolean value, CyclingButtonWidget.UpdateCallback<Boolean> callback)
     {
-        return CyclingButtonWidget.onOffBuilder(value).build(x, y, width, height, Text.translatable(text), callback);
+        return CyclingButtonWidget.onOffBuilder(value).build(x, y, width, height, Text.translatable(text.toTranslationKey(ModConstants.KEY_SETTING)), callback);
     }
 
-    private static PercentageSliderWidget createSlider(int x, int y, int width, int height, String text, double value, PercentageSliderWidget.UpdateCallback callback)
+    private static PercentageSliderWidget createSlider(int x, int y, int width, int height, Identifier text, double value, PercentageSliderWidget.UpdateCallback callback)
     {
-        return new PercentageSliderWidget(x, y, width, height, Text.translatable(text), value, callback);
+        return new PercentageSliderWidget(x, y, width, height, Text.translatable(text.toTranslationKey(ModConstants.KEY_SETTING)), value, callback);
     }
 }

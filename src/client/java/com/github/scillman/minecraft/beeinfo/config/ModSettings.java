@@ -1,12 +1,9 @@
 package com.github.scillman.minecraft.beeinfo.config;
 
+import com.github.scillman.minecraft.beeinfo.registry.ModConstants;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_MENU;
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_ENABLE_HUD;
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_X;
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.KEY_SETTING_HUD_AXIS_Y;
 
 @Environment(value=EnvType.CLIENT)
 public class ModSettings
@@ -44,81 +41,81 @@ public class ModSettings
 
     public static Boolean getEnableMenu()
     {
-        return getHandler().get(KEY_SETTING_ENABLE_MENU);
+        return getHandler().get(ModConstants.KEY_SETTING_ENABLE_MENU);
     }
 
     public static void setEnableMenu(Boolean enable)
     {
-        getHandler().set(KEY_SETTING_ENABLE_MENU, enable);
+        getHandler().set(ModConstants.KEY_SETTING_ENABLE_MENU, enable);
     }
 
     public static void resetEnableMenu()
     {
-        getHandler().reset(KEY_SETTING_ENABLE_MENU);
+        getHandler().reset(ModConstants.KEY_SETTING_ENABLE_MENU);
     }
 
     public static Boolean getEnableHud()
     {
-        return getHandler().get(KEY_SETTING_ENABLE_HUD);
+        return getHandler().get(ModConstants.KEY_SETTING_ENABLE_HUD);
     }
 
     public static void setEnableHud(Boolean enable)
     {
-        getHandler().set(KEY_SETTING_ENABLE_HUD, enable);
+        getHandler().set(ModConstants.KEY_SETTING_ENABLE_HUD, enable);
     }
 
     public static void resetEnableHud()
     {
-        getHandler().reset(KEY_SETTING_ENABLE_HUD);
+        getHandler().reset(ModConstants.KEY_SETTING_ENABLE_HUD);
     }
 
     public static Float getHudAxisXMax()
     {
-        return getHandler().max(KEY_SETTING_HUD_AXIS_X);
+        return getHandler().max(ModConstants.KEY_SETTING_HUD_AXIS_X);
     }
 
     public static Float getHudAxisXMin()
     {
-        return getHandler().min(KEY_SETTING_HUD_AXIS_X);
+        return getHandler().min(ModConstants.KEY_SETTING_HUD_AXIS_X);
     }
 
     public static Float getHudAxisX()
     {
-        return getHandler().get(KEY_SETTING_HUD_AXIS_X);
+        return getHandler().get(ModConstants.KEY_SETTING_HUD_AXIS_X);
     }
 
     public static void setHudAxisX(Float value)
     {
-        getHandler().set(KEY_SETTING_HUD_AXIS_X, value);
+        getHandler().set(ModConstants.KEY_SETTING_HUD_AXIS_X, value);
     }
 
     public static void resetHudAxisX()
     {
-        getHandler().reset(KEY_SETTING_HUD_AXIS_X);
+        getHandler().reset(ModConstants.KEY_SETTING_HUD_AXIS_X);
     }
 
     public static Float getHudAxisYMax()
     {
-        return getHandler().max(KEY_SETTING_HUD_AXIS_Y);
+        return getHandler().max(ModConstants.KEY_SETTING_HUD_AXIS_Y);
     }
 
     public static Float getHudAxisYMin()
     {
-        return getHandler().min(KEY_SETTING_HUD_AXIS_Y);
+        return getHandler().min(ModConstants.KEY_SETTING_HUD_AXIS_Y);
     }
 
     public static Float getHudAxisY()
     {
-        return getHandler().get(KEY_SETTING_HUD_AXIS_Y);
+        return getHandler().get(ModConstants.KEY_SETTING_HUD_AXIS_Y);
     }
 
     public static void setHudAxisY(Float value)
     {
-        getHandler().set(KEY_SETTING_HUD_AXIS_Y, value);
+        getHandler().set(ModConstants.KEY_SETTING_HUD_AXIS_Y, value);
     }
 
     public static void resetHudAxisY()
     {
-        getHandler().reset(KEY_SETTING_HUD_AXIS_Y);
+        getHandler().reset(ModConstants.KEY_SETTING_HUD_AXIS_Y);
     }
 }

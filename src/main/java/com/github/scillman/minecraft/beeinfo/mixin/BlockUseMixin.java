@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.github.scillman.minecraft.beeinfo.BeeInfoServer;
+import com.github.scillman.minecraft.beeinfo.ModMain;
 import com.github.scillman.minecraft.beeinfo.nbt.NbtBeehive;
 
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -49,7 +49,7 @@ public class BlockUseMixin
                 if (state.isIn(BlockTags.BEEHIVES, statex -> statex.contains(HONEY_LEVEL)))
                 {
                     NbtBeehive nbtBeehive = NbtBeehive.create(world, pos, state);
-                    BeeInfoServer.sendBlockInfoToClient(serverPlayer, nbtBeehive.getHoneyLevel(), nbtBeehive.getBeeNames());
+                    ModMain.sendBlockInfoToClient(serverPlayer, nbtBeehive.getHoneyLevel(), nbtBeehive.getBeeNames());
                 }
             }
         }

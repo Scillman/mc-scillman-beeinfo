@@ -1,5 +1,6 @@
 package com.github.scillman.minecraft.beeinfo.gui;
 
+import com.github.scillman.minecraft.beeinfo.registry.ModConstants;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.fabricmc.api.Environment;
@@ -12,6 +13,9 @@ public class OptionsMenu implements ModMenuApi
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory()
     {
-        return screen -> new com.github.scillman.minecraft.beeinfo.gui.OptionsScreen(Text.literal("Bee Information Tweaks"));
+        return screen -> new com.github.scillman.minecraft.beeinfo.gui.OptionsScreen(
+            Text.translatable(ModConstants.MENU_OPTIONS_MENU.toTranslationKey(ModConstants.KEY_MENU))
+            //Text.literal("Bee Information Tweaks")
+        );
     }
 }

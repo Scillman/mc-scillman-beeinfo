@@ -24,6 +24,7 @@ bin/
 *.DS_Store
 
 # Fabric
+generated/
 run/
 
 # Java

@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
+import static com.github.scillman.minecraft.beeinfo.ModMain.LOGGER;
 
 @Environment(value=EnvType.CLIENT)
 public class ConfigurationFile

@@ -9,22 +9,20 @@ import org.jetbrains.annotations.Nullable;
 public class ConfigurationItem
 {
     private String key;
-    private String hint;
     private Object value;
     private @Nullable Object minValue;
     private @Nullable Object maxValue;
     private Object defaultValue;
     private Consumer<ConfigurationItem> callback;
 
-    public ConfigurationItem(String key, String hint, @Nullable Object value, Object defaultValue, Consumer<ConfigurationItem> callback)
+    public ConfigurationItem(String key, @Nullable Object value, Object defaultValue, Consumer<ConfigurationItem> callback)
     {
-        this(key, hint, value, defaultValue, null, null, callback);
+        this(key, value, defaultValue, null, null, callback);
     }
 
-    public ConfigurationItem(String key, String hint, @Nullable Object value, Object defaultValue, @Nullable Object minValue, @Nullable Object maxValue, Consumer<ConfigurationItem> callback)
+    public ConfigurationItem(String key, @Nullable Object value, Object defaultValue, @Nullable Object minValue, @Nullable Object maxValue, Consumer<ConfigurationItem> callback)
     {
         this.key = key;
-        this.hint = hint;
         this.value = (value != null ? value : defaultValue);
         this.defaultValue = defaultValue;
         this.minValue = minValue;
@@ -45,11 +43,6 @@ public class ConfigurationItem
     public String key()
     {
         return key;
-    }
-
-    public String hint()
-    {
-        return hint;
     }
 
     @Nullable

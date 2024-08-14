@@ -1,6 +1,8 @@
 package com.github.scillman.minecraft.beeinfo.gui;
 
-import com.github.scillman.minecraft.beeinfo.BeeInfo;
+import com.github.scillman.minecraft.beeinfo.ModMain;
+import com.github.scillman.minecraft.beeinfo.registry.ModConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 import net.fabricmc.api.Environment;
@@ -13,15 +15,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
-import static com.github.scillman.minecraft.beeinfo.BeeInfo.LOGGER;
-
 /**
  * @brief The screen used for rendering the menu.
  */
 @Environment(value=EnvType.CLIENT)
 public class InGameMenu extends Screen
 {
-    private static final Identifier MENU_TEXTURE = Identifier.of(BeeInfo.MOD_ID, "textures/gui/menu.png");
+    private static final Identifier MENU_TEXTURE = Identifier.of(ModMain.MOD_ID, "textures/gui/menu.png");
 
     private int honeyLevel;
     private List<Text> beeNames;
@@ -31,7 +31,7 @@ public class InGameMenu extends Screen
 
     public InGameMenu(int honeyLevel, int beeCount, List<String> beeNames)
     {
-        super(Text.translatable("beeinfo.screen.title"));
+        super(Text.translatable(ModConstants.MENU_INGAME_MENU.toTranslationKey(ModConstants.KEY_MENU)));
 
         this.honeyLevel = honeyLevel;
         this.beeNames = new ArrayList<Text>(beeNames.size());
@@ -39,7 +39,6 @@ public class InGameMenu extends Screen
         int max = Math.min(beeCount, beeNames.size());
         for (int i = 0; i < max; i++)
         {
-            LOGGER.info("beeName = '{}'", beeNames.get(i));
             this.beeNames.add(Text.translatable(beeNames.get(i)));
         }
 

@@ -1,6 +1,6 @@
 package com.github.scillman.minecraft.beeinfo.mixin.client;
 
-import com.github.scillman.minecraft.beeinfo.BeeInfoClient;
+import com.github.scillman.minecraft.beeinfo.ModClient;
 import com.github.scillman.minecraft.beeinfo.network.PacketLookAt;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -87,7 +87,7 @@ public class LookAtMixin
             // The player does not look at a honey bee container.
             // Instead of sending a request to update the value,
             // reset the local variables.
-            BeeInfoClient.resetLookAtBlock();
+            ModClient.resetLookAtBlock();
         }
     }
 

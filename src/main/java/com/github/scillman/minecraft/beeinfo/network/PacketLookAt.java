@@ -1,6 +1,6 @@
 package com.github.scillman.minecraft.beeinfo.network;
 
-import com.github.scillman.minecraft.beeinfo.BeeInfo;
+import com.github.scillman.minecraft.beeinfo.registry.ModConstants;
 
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.packet.CustomPayload;
@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
  */
 public record PacketLookAt(BlockPos blockPos) implements CustomPayload
 {
-    public static final CustomPayload.Id<PacketLookAt> ID = new CustomPayload.Id<>(BeeInfo.PACKET_ID_LOOKAT);
+    public static final CustomPayload.Id<PacketLookAt> ID = new CustomPayload.Id<>(ModConstants.PACKET_ID_LOOKAT);
     public static final PacketCodec<RegistryByteBuf, PacketLookAt> CODEC = PacketCodec.tuple(
         BlockPos.PACKET_CODEC, PacketLookAt::blockPos,
         PacketLookAt::new

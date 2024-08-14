@@ -2,6 +2,9 @@ package com.github.scillman.minecraft.beeinfo;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.scillman.minecraft.beeinfo.nbt.NbtBeehive;
 import com.github.scillman.minecraft.beeinfo.network.PacketHUD;
 import com.github.scillman.minecraft.beeinfo.network.PacketLookAt;
@@ -18,8 +21,13 @@ import net.minecraft.world.World;
 
 import static net.minecraft.block.BeehiveBlock.HONEY_LEVEL;
 
-public class BeeInfoServer implements ModInitializer
+public class ModMain implements ModInitializer
 {
+    public static final String MOD_ID = "beeinfo";
+    public static final String MOD_NAME = "BeeInfo";
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
+
     @Override
     public void onInitialize()
     {
@@ -27,7 +35,7 @@ public class BeeInfoServer implements ModInitializer
         PayloadTypeRegistry.playS2C().register(PacketMenu.ID, PacketMenu.CODEC);
         PayloadTypeRegistry.playC2S().register(PacketLookAt.ID, PacketLookAt.CODEC);
 
-        ServerPlayNetworking.registerGlobalReceiver(PacketLookAt.ID, BeeInfoServer::onLookAtPayloadReceived);
+        ServerPlayNetworking.registerGlobalReceiver(PacketLookAt.ID, ModMain::onLookAtPayloadReceived);
     }
 
     public static void onLookAtPayloadReceived(PacketLookAt payload, ServerPlayNetworking.Context context)

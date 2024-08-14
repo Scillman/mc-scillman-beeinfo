@@ -18,10 +18,13 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.github.scillman.minecraft.beeinfo.BeeInfoServer"
+            "com.github.scillman.minecraft.beeinfo.ModMain"
         ],
         "client": [
-            "com.github.scillman.minecraft.beeinfo.BeeInfoClient"
+            "com.github.scillman.minecraft.beeinfo.ModClient"
+        ],
+        "fabric-datagen": [
+            "com.github.scillman.minecraft.beeinfo.datagen.ModDataGenerator"
         ],
         "modmenu": [
             "com.github.scillman.minecraft.beeinfo.gui.OptionsMenu"
