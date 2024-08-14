@@ -82,14 +82,14 @@ public class OptionsScreen extends Screen
         buttonToggleMenu = createToggleButton(
             ITEM_X_LEFT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
-            ModConstants.KEY_SETTING_ENABLE_MENU,
+            ModConstants.SETTING_ENABLE_MENU,
             ModSettings.getEnableMenu(),
             this::onToggleMenu
         );
         buttonToggleHud = createToggleButton(
             ITEM_X_RIGHT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
-            ModConstants.KEY_SETTING_ENABLE_HUD,
+            ModConstants.SETTING_ENABLE_HUD,
             ModSettings.getEnableHud(),
             this::onToggleHud
         );
@@ -99,14 +99,14 @@ public class OptionsScreen extends Screen
         sliderHudAxisX = createSlider(
             ITEM_X_LEFT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
-            ModConstants.KEY_SETTING_HUD_AXIS_X,
+            ModConstants.SETTING_HUD_AXIS_X,
             ModSettings.getHudAxisX(),
             this::onHudAxisXChanged
         );
         sliderHudAxisY = createSlider(
             ITEM_X_RIGHT, nextY,
             ITEM_WIDTH, ITEM_HEIGHT,
-            ModConstants.KEY_SETTING_HUD_AXIS_Y,
+            ModConstants.SETTING_HUD_AXIS_Y,
             ModSettings.getHudAxisY(),
             this::onHudAxisYChanged
         );

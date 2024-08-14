@@ -11,10 +11,10 @@ public final class ModConstants
     public static final Identifier PACKET_ID_HUD    = Identifier.of(MOD_ID, "server/hud");
 
     public static final String KEY_SETTING = "setting";
-    public static final Identifier KEY_SETTING_ENABLE_MENU = Identifier.of(MOD_ID, "enable_menu");
-    public static final Identifier KEY_SETTING_ENABLE_HUD  = Identifier.of(MOD_ID, "enable_hud");
-    public static final Identifier KEY_SETTING_HUD_AXIS_X  = Identifier.of(MOD_ID, "hud_axis_x");
-    public static final Identifier KEY_SETTING_HUD_AXIS_Y  = Identifier.of(MOD_ID, "hud_axis_y");
+    public static final Identifier SETTING_ENABLE_MENU  = Identifier.of(MOD_ID, "enable_menu");
+    public static final Identifier SETTING_ENABLE_HUD   = Identifier.of(MOD_ID, "enable_hud");
+    public static final Identifier SETTING_HUD_AXIS_X   = Identifier.of(MOD_ID, "hud_axis_x");
+    public static final Identifier SETTING_HUD_AXIS_Y   = Identifier.of(MOD_ID, "hud_axis_y");
 
     public static final String KEY_TOOLTIP = "tooltip";
     public static final Identifier TOOLTIP_BEES_BABY    = Identifier.of(MOD_ID, "bees_baby");

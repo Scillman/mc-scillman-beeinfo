@@ -18,9 +18,9 @@ public class ModSettingsHandler extends Configuration
     {
         super.init(modId);
 
-        register(ModConstants.KEY_SETTING_ENABLE_MENU, null, false);
-        register(ModConstants.KEY_SETTING_ENABLE_HUD,  null, true);
-        register(ModConstants.KEY_SETTING_HUD_AXIS_X,  null, 0.63f, 0.0f, 1.0f);
-        register(ModConstants.KEY_SETTING_HUD_AXIS_Y,  null, 0.63f, 0.0f, 1.0f);
+        register(ModConstants.SETTING_ENABLE_MENU, null, false);
+        register(ModConstants.SETTING_ENABLE_HUD,  null, true);
+        register(ModConstants.SETTING_HUD_AXIS_X,  null, 0.63f, 0.0f, 1.0f);
+        register(ModConstants.SETTING_HUD_AXIS_Y,  null, 0.63f, 0.0f, 1.0f);
     }
 }

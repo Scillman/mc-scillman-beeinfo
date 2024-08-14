@@ -15,7 +15,6 @@ public class OptionsMenu implements ModMenuApi
     {
         return screen -> new com.github.scillman.minecraft.beeinfo.gui.OptionsScreen(
             Text.translatable(ModConstants.MENU_OPTIONS_MENU.toTranslationKey(ModConstants.KEY_MENU))
-            //Text.literal("Bee Information Tweaks")
         );
     }
 }

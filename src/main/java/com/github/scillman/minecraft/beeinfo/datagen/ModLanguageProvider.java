@@ -19,10 +19,10 @@ public class ModLanguageProvider extends FabricLanguageProvider
     @Override
     public void generateTranslations(WrapperLookup registryLookup, TranslationBuilder translationBuilder)
     {
-        addSetting(translationBuilder, ModConstants.KEY_SETTING_ENABLE_MENU, "Enable Menu");
-        addSetting(translationBuilder, ModConstants.KEY_SETTING_ENABLE_HUD, "Enable HUD");
-        addSetting(translationBuilder, ModConstants.KEY_SETTING_HUD_AXIS_X, "HUD X-offset");
-        addSetting(translationBuilder, ModConstants.KEY_SETTING_HUD_AXIS_Y, "HUD Y-offset");
+        addSetting(translationBuilder, ModConstants.SETTING_ENABLE_MENU, "Enable Menu");
+        addSetting(translationBuilder, ModConstants.SETTING_ENABLE_HUD, "Enable HUD");
+        addSetting(translationBuilder, ModConstants.SETTING_HUD_AXIS_X, "HUD X-offset");
+        addSetting(translationBuilder, ModConstants.SETTING_HUD_AXIS_Y, "HUD Y-offset");
 
         addTooltip(translationBuilder, ModConstants.TOOLTIP_BEES_BABY, "§6%d Baby Bees");
         addTooltip(translationBuilder, ModConstants.TOOLTIP_BEES_ADULT, "§6%d Adult Bees");
