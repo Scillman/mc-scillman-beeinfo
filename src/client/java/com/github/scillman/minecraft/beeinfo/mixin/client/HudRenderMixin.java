@@ -15,6 +15,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.text.OrderedText;
 import net.minecraft.util.math.BlockPos;
@@ -75,6 +76,12 @@ public class HudRenderMixin
         return blockState.contains(HONEY_LEVEL);
     }
 
+    private void drawHudTexture(DrawContext context, int x, int y, int u, int v, int width, int height)
+    {
+        //context.drawGuiTexture(RenderLayer::getGuiTextured, ModClient.HUD_TEXTURE, 256, 256, u, v, x, y, width, height);
+        context.drawTexture(RenderLayer::getGuiTextured, ModClient.HUD_TEXTURE, x, y, u, v, width, height, 256, 256);
+    }
+
     /**
      * Draws the HUD on the client side.
      * @param matrices
@@ -90,15 +97,15 @@ public class HudRenderMixin
         int y = (int) ((client.getWindow().getScaledHeight() - HUD_HEIGHT) * ModSettings.getHudAxisY());
 
         // Draw the background texture
-        context.drawTexture(ModClient.HUD_TEXTURE, x, y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
+        drawHudTexture(context, x, y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
 
         // Fills the honey slots with honey if the respective level is met
         int honey = ModClient.lastHiveResponseHoneyLevel; //blockState.get(HONEY_LEVEL);
-        if (honey >= 1) context.drawTexture(ModClient.HUD_TEXTURE, x+17, y+16, 84, 17, 6, 7);
-        if (honey >= 2) context.drawTexture(ModClient.HUD_TEXTURE, x+24, y+22, 84, 17, 6, 7);
-        if (honey >= 3) context.drawTexture(ModClient.HUD_TEXTURE, x+31, y+16, 84, 17, 6, 7);
-        if (honey >= 4) context.drawTexture(ModClient.HUD_TEXTURE, x+38, y+22, 84, 17, 6, 7);
-        if (honey >= 5) context.drawTexture(ModClient.HUD_TEXTURE, x+51, y+16, 83, 34, 14, 13);
+        if (honey >= 1) drawHudTexture(context, x+17, y+16, 84, 17, 6, 7);
+        if (honey >= 2) drawHudTexture(context, x+24, y+22, 84, 17, 6, 7);
+        if (honey >= 3) drawHudTexture(context, x+31, y+16, 84, 17, 6, 7);
+        if (honey >= 4) drawHudTexture(context, x+38, y+22, 84, 17, 6, 7);
+        if (honey >= 5) drawHudTexture(context, x+51, y+16, 83, 34, 14, 13);
 
         // Draws the bees inside the hive based on the count
         drawBeeTexture(context, 0, x+14, y+37);
@@ -123,11 +130,11 @@ public class HudRenderMixin
         {
             if (ModClient.lastHiveResponseBabyBeeCount > index)
             {
-                context.drawTexture(ModClient.HUD_TEXTURE, x+1, y+1, 101, 3, 10, 10);
+                drawHudTexture(context, x+1, y+1, 101, 3, 10, 10);
             }
             else
             {
-                context.drawTexture(ModClient.HUD_TEXTURE, x, y, 83, 2, 13, 12);
+                drawHudTexture(context, x, y, 83, 2, 13, 12);
             }
         }
     }

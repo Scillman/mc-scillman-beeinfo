@@ -9,6 +9,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -22,6 +23,8 @@ import org.lwjgl.glfw.GLFW;
 public class InGameMenu extends Screen
 {
     private static final Identifier MENU_TEXTURE = Identifier.of(ModMain.MOD_ID, "textures/gui/menu.png");
+    private static final int MENU_TEXTURE_WIDTH = 256;
+    private static final int MENU_TEXTURE_HEIGHT = 256;
 
     private int honeyLevel;
     private List<Text> beeNames;
@@ -62,6 +65,11 @@ public class InGameMenu extends Screen
         this.y = (this.height - usedHeight) / 2;
     }
 
+    private void drawTexture(DrawContext context, int x, int y, float u, float v, int width, int height)
+    {
+        context.drawTexture(RenderLayer::getGuiTextured, MENU_TEXTURE, x, y, u, v, width, height, MENU_TEXTURE_WIDTH, MENU_TEXTURE_HEIGHT);
+    }
+
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta)
     {
@@ -72,23 +80,23 @@ public class InGameMenu extends Screen
 
         renderBackground(context, mouseX, mouseY, delta);
 
-        context.drawTexture(MENU_TEXTURE, x, y, 0, 0, 176, 30); // header
+        drawTexture(context, x, y, 0, 0, 176, 30); // header
 
         int minRows = getMinBeeRows();
         for (int i = 0; i < minRows; i++)
         {
-            context.drawTexture(MENU_TEXTURE, x, y+30+(i*30), 0, 30, 176, 30); // icon+name background
+            drawTexture(context, x, y+30+(i*30), 0, 30, 176, 30); // icon+name background
 
             if (i < beeNames.size())
             {
-                context.drawTexture(MENU_TEXTURE, x+9, y+32+(i*30), 0, 166, 22, 22); // icon
+                drawTexture(context, x+9, y+32+(i*30), 0, 166, 22, 22); // icon
             }
         }
-        context.drawTexture(MENU_TEXTURE, x, y+30+(minRows*30), 0, 157, 176, 8); // footer
+        drawTexture(context, x, y+30+(minRows*30), 0, 157, 176, 8); // footer
 
         for (int i = Math.max(5, honeyLevel); i < 9; i++)
         {
-            context.drawTexture(MENU_TEXTURE, x+7+(i*18), y+7, 8, 64, 18, 18); // bottle slots
+            drawTexture(context, x+7+(i*18), y+7, 8, 64, 18, 18); // bottle slots
         }
 
         for (int i = 0; i < beeNames.size(); i++)
